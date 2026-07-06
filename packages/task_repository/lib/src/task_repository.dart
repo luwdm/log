@@ -41,7 +41,7 @@ class TaskRepository {
             id: taskEntity.id,
             description: taskEntity.description,
             createdAt: taskEntity.createdAt,
-            updatedAt: taskEntity.updatedAt,
+            updatedAt: DateTime.now(),
             finishedAt: taskEntity.finishedAt,
           );
         }).toList();
@@ -63,7 +63,6 @@ class TaskRepository {
             TaskEntityCompanion.insert(
               description: taskTitle,
               createdAt: now,
-              updatedAt: now,
             ),
           );
     } catch (_) {

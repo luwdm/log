@@ -30,12 +30,6 @@ class $TaskEntityTable extends TaskEntity
   late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
       'created_at', aliasedName, false,
       type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const VerificationMeta _updatedAtMeta =
-      const VerificationMeta('updatedAt');
-  @override
-  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
-      'updated_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
   static const VerificationMeta _finishedAtMeta =
       const VerificationMeta('finishedAt');
   @override
@@ -44,7 +38,7 @@ class $TaskEntityTable extends TaskEntity
       type: DriftSqlType.dateTime, requiredDuringInsert: false);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, description, createdAt, updatedAt, finishedAt];
+      [id, description, createdAt, finishedAt];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -72,12 +66,6 @@ class $TaskEntityTable extends TaskEntity
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    } else if (isInserting) {
-      context.missing(_updatedAtMeta);
-    }
     if (data.containsKey('finished_at')) {
       context.handle(
           _finishedAtMeta,
@@ -99,8 +87,6 @@ class $TaskEntityTable extends TaskEntity
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
       createdAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
-      updatedAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
       finishedAt: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}finished_at']),
     );
@@ -122,16 +108,12 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
   /// The creation date of the task.
   final DateTime createdAt;
 
-  /// The date of the last update.
-  final DateTime updatedAt;
-
   /// The date when the user finished the task.
   final DateTime? finishedAt;
   const TaskEntityData(
       {required this.id,
       required this.description,
       required this.createdAt,
-      required this.updatedAt,
       this.finishedAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -139,7 +121,6 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
     map['id'] = Variable<int>(id);
     map['description'] = Variable<String>(description);
     map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || finishedAt != null) {
       map['finished_at'] = Variable<DateTime>(finishedAt);
     }
@@ -151,7 +132,6 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
       id: Value(id),
       description: Value(description),
       createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
       finishedAt: finishedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(finishedAt),
@@ -165,7 +145,6 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
       id: serializer.fromJson<int>(json['id']),
       description: serializer.fromJson<String>(json['description']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       finishedAt: serializer.fromJson<DateTime?>(json['finishedAt']),
     );
   }
@@ -176,7 +155,6 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
       'id': serializer.toJson<int>(id),
       'description': serializer.toJson<String>(description),
       'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'finishedAt': serializer.toJson<DateTime?>(finishedAt),
     };
   }
@@ -185,13 +163,11 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
           {int? id,
           String? description,
           DateTime? createdAt,
-          DateTime? updatedAt,
           Value<DateTime?> finishedAt = const Value.absent()}) =>
       TaskEntityData(
         id: id ?? this.id,
         description: description ?? this.description,
         createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt,
         finishedAt: finishedAt.present ? finishedAt.value : this.finishedAt,
       );
   TaskEntityData copyWithCompanion(TaskEntityCompanion data) {
@@ -200,7 +176,6 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
       description:
           data.description.present ? data.description.value : this.description,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       finishedAt:
           data.finishedAt.present ? data.finishedAt.value : this.finishedAt,
     );
@@ -212,15 +187,13 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
           ..write('id: $id, ')
           ..write('description: $description, ')
           ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
           ..write('finishedAt: $finishedAt')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, description, createdAt, updatedAt, finishedAt);
+  int get hashCode => Object.hash(id, description, createdAt, finishedAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -228,7 +201,6 @@ class TaskEntityData extends DataClass implements Insertable<TaskEntityData> {
           other.id == this.id &&
           other.description == this.description &&
           other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt &&
           other.finishedAt == this.finishedAt);
 }
 
@@ -236,36 +208,30 @@ class TaskEntityCompanion extends UpdateCompanion<TaskEntityData> {
   final Value<int> id;
   final Value<String> description;
   final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
   final Value<DateTime?> finishedAt;
   const TaskEntityCompanion({
     this.id = const Value.absent(),
     this.description = const Value.absent(),
     this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
     this.finishedAt = const Value.absent(),
   });
   TaskEntityCompanion.insert({
     this.id = const Value.absent(),
     required String description,
     required DateTime createdAt,
-    required DateTime updatedAt,
     this.finishedAt = const Value.absent(),
   })  : description = Value(description),
-        createdAt = Value(createdAt),
-        updatedAt = Value(updatedAt);
+        createdAt = Value(createdAt);
   static Insertable<TaskEntityData> custom({
     Expression<int>? id,
     Expression<String>? description,
     Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
     Expression<DateTime>? finishedAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (description != null) 'description': description,
       if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
       if (finishedAt != null) 'finished_at': finishedAt,
     });
   }
@@ -274,13 +240,11 @@ class TaskEntityCompanion extends UpdateCompanion<TaskEntityData> {
       {Value<int>? id,
       Value<String>? description,
       Value<DateTime>? createdAt,
-      Value<DateTime>? updatedAt,
       Value<DateTime?>? finishedAt}) {
     return TaskEntityCompanion(
       id: id ?? this.id,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
       finishedAt: finishedAt ?? this.finishedAt,
     );
   }
@@ -297,9 +261,6 @@ class TaskEntityCompanion extends UpdateCompanion<TaskEntityData> {
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
     }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
     if (finishedAt.present) {
       map['finished_at'] = Variable<DateTime>(finishedAt.value);
     }
@@ -312,104 +273,84 @@ class TaskEntityCompanion extends UpdateCompanion<TaskEntityData> {
           ..write('id: $id, ')
           ..write('description: $description, ')
           ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
           ..write('finishedAt: $finishedAt')
           ..write(')'))
         .toString();
   }
 }
 
-class $TagEntityTable extends TagEntity
-    with TableInfo<$TagEntityTable, TagEntityData> {
+class $DayEntityTable extends DayEntity
+    with TableInfo<$DayEntityTable, DayEntityData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $TagEntityTable(this.attachedDatabase, [this._alias]);
+  $DayEntityTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      hasAutoIncrement: true,
       type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+      requiredDuringInsert: true,
+      defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'));
   @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns => [id, name];
+  List<GeneratedColumn> get $columns => [id];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'tag_entity';
+  static const String $name = 'day_entity';
   @override
-  VerificationContext validateIntegrity(Insertable<TagEntityData> instance,
+  VerificationContext validateIntegrity(Insertable<DayEntityData> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
-      context.missing(_nameMeta);
+      context.missing(_idMeta);
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  TagEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DayEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TagEntityData(
+    return DayEntityData(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
     );
   }
 
   @override
-  $TagEntityTable createAlias(String alias) {
-    return $TagEntityTable(attachedDatabase, alias);
+  $DayEntityTable createAlias(String alias) {
+    return $DayEntityTable(attachedDatabase, alias);
   }
 }
 
-class TagEntityData extends DataClass implements Insertable<TagEntityData> {
-  /// The id of the tag.
+class DayEntityData extends DataClass implements Insertable<DayEntityData> {
+  /// Combination of year + month + day.
   final int id;
-
-  /// The name of the tag.
-  final String name;
-  const TagEntityData({required this.id, required this.name});
+  const DayEntityData({required this.id});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
-    map['name'] = Variable<String>(name);
     return map;
   }
 
-  TagEntityCompanion toCompanion(bool nullToAbsent) {
-    return TagEntityCompanion(
+  DayEntityCompanion toCompanion(bool nullToAbsent) {
+    return DayEntityCompanion(
       id: Value(id),
-      name: Value(name),
     );
   }
 
-  factory TagEntityData.fromJson(Map<String, dynamic> json,
+  factory DayEntityData.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TagEntityData(
+    return DayEntityData(
       id: serializer.fromJson<int>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
     );
   }
   @override
@@ -417,65 +358,58 @@ class TagEntityData extends DataClass implements Insertable<TagEntityData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
-      'name': serializer.toJson<String>(name),
     };
   }
 
-  TagEntityData copyWith({int? id, String? name}) => TagEntityData(
+  DayEntityData copyWith({int? id}) => DayEntityData(
         id: id ?? this.id,
-        name: name ?? this.name,
       );
-  TagEntityData copyWithCompanion(TagEntityCompanion data) {
-    return TagEntityData(
+  DayEntityData copyWithCompanion(DayEntityCompanion data) {
+    return DayEntityData(
       id: data.id.present ? data.id.value : this.id,
-      name: data.name.present ? data.name.value : this.name,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('TagEntityData(')
-          ..write('id: $id, ')
-          ..write('name: $name')
+    return (StringBuffer('DayEntityData(')
+          ..write('id: $id')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name);
+  int get hashCode => id.hashCode;
   @override
   bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is TagEntityData &&
-          other.id == this.id &&
-          other.name == this.name);
+      identical(this, other) || (other is DayEntityData && other.id == this.id);
 }
 
-class TagEntityCompanion extends UpdateCompanion<TagEntityData> {
+class DayEntityCompanion extends UpdateCompanion<DayEntityData> {
   final Value<int> id;
-  final Value<String> name;
-  const TagEntityCompanion({
+  final Value<int> rowid;
+  const DayEntityCompanion({
     this.id = const Value.absent(),
-    this.name = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
-  TagEntityCompanion.insert({
-    this.id = const Value.absent(),
-    required String name,
-  }) : name = Value(name);
-  static Insertable<TagEntityData> custom({
+  DayEntityCompanion.insert({
+    required int id,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id);
+  static Insertable<DayEntityData> custom({
     Expression<int>? id,
-    Expression<String>? name,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (name != null) 'name': name,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
-  TagEntityCompanion copyWith({Value<int>? id, Value<String>? name}) {
-    return TagEntityCompanion(
+  DayEntityCompanion copyWith({Value<int>? id, Value<int>? rowid}) {
+    return DayEntityCompanion(
       id: id ?? this.id,
-      name: name ?? this.name,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -485,17 +419,239 @@ class TagEntityCompanion extends UpdateCompanion<TagEntityData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
     }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('TagEntityCompanion(')
+    return (StringBuffer('DayEntityCompanion(')
           ..write('id: $id, ')
-          ..write('name: $name')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $DayTaskAssignmentTable extends DayTaskAssignment
+    with TableInfo<$DayTaskAssignmentTable, DayTaskAssignmentData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $DayTaskAssignmentTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _dayIdMeta = const VerificationMeta('dayId');
+  @override
+  late final GeneratedColumn<int> dayId = GeneratedColumn<int>(
+      'day_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _taskIdMeta = const VerificationMeta('taskId');
+  @override
+  late final GeneratedColumn<int> taskId = GeneratedColumn<int>(
+      'task_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [id, dayId, taskId];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'day_task_assignment';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<DayTaskAssignmentData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('day_id')) {
+      context.handle(
+          _dayIdMeta, dayId.isAcceptableOrUnknown(data['day_id']!, _dayIdMeta));
+    } else if (isInserting) {
+      context.missing(_dayIdMeta);
+    }
+    if (data.containsKey('task_id')) {
+      context.handle(_taskIdMeta,
+          taskId.isAcceptableOrUnknown(data['task_id']!, _taskIdMeta));
+    } else if (isInserting) {
+      context.missing(_taskIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  DayTaskAssignmentData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return DayTaskAssignmentData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      dayId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}day_id'])!,
+      taskId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}task_id'])!,
+    );
+  }
+
+  @override
+  $DayTaskAssignmentTable createAlias(String alias) {
+    return $DayTaskAssignmentTable(attachedDatabase, alias);
+  }
+}
+
+class DayTaskAssignmentData extends DataClass
+    implements Insertable<DayTaskAssignmentData> {
+  final int id;
+
+  /// The id of the day.
+  final int dayId;
+
+  /// The id of the task.
+  final int taskId;
+  const DayTaskAssignmentData(
+      {required this.id, required this.dayId, required this.taskId});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['day_id'] = Variable<int>(dayId);
+    map['task_id'] = Variable<int>(taskId);
+    return map;
+  }
+
+  DayTaskAssignmentCompanion toCompanion(bool nullToAbsent) {
+    return DayTaskAssignmentCompanion(
+      id: Value(id),
+      dayId: Value(dayId),
+      taskId: Value(taskId),
+    );
+  }
+
+  factory DayTaskAssignmentData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return DayTaskAssignmentData(
+      id: serializer.fromJson<int>(json['id']),
+      dayId: serializer.fromJson<int>(json['dayId']),
+      taskId: serializer.fromJson<int>(json['taskId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'dayId': serializer.toJson<int>(dayId),
+      'taskId': serializer.toJson<int>(taskId),
+    };
+  }
+
+  DayTaskAssignmentData copyWith({int? id, int? dayId, int? taskId}) =>
+      DayTaskAssignmentData(
+        id: id ?? this.id,
+        dayId: dayId ?? this.dayId,
+        taskId: taskId ?? this.taskId,
+      );
+  DayTaskAssignmentData copyWithCompanion(DayTaskAssignmentCompanion data) {
+    return DayTaskAssignmentData(
+      id: data.id.present ? data.id.value : this.id,
+      dayId: data.dayId.present ? data.dayId.value : this.dayId,
+      taskId: data.taskId.present ? data.taskId.value : this.taskId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DayTaskAssignmentData(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('taskId: $taskId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, dayId, taskId);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is DayTaskAssignmentData &&
+          other.id == this.id &&
+          other.dayId == this.dayId &&
+          other.taskId == this.taskId);
+}
+
+class DayTaskAssignmentCompanion
+    extends UpdateCompanion<DayTaskAssignmentData> {
+  final Value<int> id;
+  final Value<int> dayId;
+  final Value<int> taskId;
+  const DayTaskAssignmentCompanion({
+    this.id = const Value.absent(),
+    this.dayId = const Value.absent(),
+    this.taskId = const Value.absent(),
+  });
+  DayTaskAssignmentCompanion.insert({
+    this.id = const Value.absent(),
+    required int dayId,
+    required int taskId,
+  })  : dayId = Value(dayId),
+        taskId = Value(taskId);
+  static Insertable<DayTaskAssignmentData> custom({
+    Expression<int>? id,
+    Expression<int>? dayId,
+    Expression<int>? taskId,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (dayId != null) 'day_id': dayId,
+      if (taskId != null) 'task_id': taskId,
+    });
+  }
+
+  DayTaskAssignmentCompanion copyWith(
+      {Value<int>? id, Value<int>? dayId, Value<int>? taskId}) {
+    return DayTaskAssignmentCompanion(
+      id: id ?? this.id,
+      dayId: dayId ?? this.dayId,
+      taskId: taskId ?? this.taskId,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (dayId.present) {
+      map['day_id'] = Variable<int>(dayId.value);
+    }
+    if (taskId.present) {
+      map['task_id'] = Variable<int>(taskId.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('DayTaskAssignmentCompanion(')
+          ..write('id: $id, ')
+          ..write('dayId: $dayId, ')
+          ..write('taskId: $taskId')
           ..write(')'))
         .toString();
   }
@@ -505,85 +661,94 @@ abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
   late final $TaskEntityTable taskEntity = $TaskEntityTable(this);
-  late final $TagEntityTable tagEntity = $TagEntityTable(this);
+  late final $DayEntityTable dayEntity = $DayEntityTable(this);
+  late final $DayTaskAssignmentTable dayTaskAssignment =
+      $DayTaskAssignmentTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [taskEntity, tagEntity];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [taskEntity, dayEntity, dayTaskAssignment];
 }
 
 typedef $$TaskEntityTableCreateCompanionBuilder = TaskEntityCompanion Function({
   Value<int> id,
   required String description,
   required DateTime createdAt,
-  required DateTime updatedAt,
   Value<DateTime?> finishedAt,
 });
 typedef $$TaskEntityTableUpdateCompanionBuilder = TaskEntityCompanion Function({
   Value<int> id,
   Value<String> description,
   Value<DateTime> createdAt,
-  Value<DateTime> updatedAt,
   Value<DateTime?> finishedAt,
 });
 
 class $$TaskEntityTableFilterComposer
-    extends FilterComposer<_$Database, $TaskEntityTable> {
-  $$TaskEntityTableFilterComposer(super.$state);
-  ColumnFilters<int> get id => $state.composableBuilder(
-      column: $state.table.id,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $TaskEntityTable> {
+  $$TaskEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<DateTime> get updatedAt => $state.composableBuilder(
-      column: $state.table.updatedAt,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
-
-  ColumnFilters<DateTime> get finishedAt => $state.composableBuilder(
-      column: $state.table.finishedAt,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+  ColumnFilters<DateTime> get finishedAt => $composableBuilder(
+      column: $table.finishedAt, builder: (column) => ColumnFilters(column));
 }
 
 class $$TaskEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $TaskEntityTable> {
-  $$TaskEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<int> get id => $state.composableBuilder(
-      column: $state.table.id,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+    extends Composer<_$Database, $TaskEntityTable> {
+  $$TaskEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get description => $state.composableBuilder(
-      column: $state.table.description,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get createdAt => $state.composableBuilder(
-      column: $state.table.createdAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<DateTime> get updatedAt => $state.composableBuilder(
-      column: $state.table.updatedAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+  ColumnOrderings<DateTime> get finishedAt => $composableBuilder(
+      column: $table.finishedAt, builder: (column) => ColumnOrderings(column));
+}
 
-  ColumnOrderings<DateTime> get finishedAt => $state.composableBuilder(
-      column: $state.table.finishedAt,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $$TaskEntityTableAnnotationComposer
+    extends Composer<_$Database, $TaskEntityTable> {
+  $$TaskEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+      column: $table.description, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get finishedAt => $composableBuilder(
+      column: $table.finishedAt, builder: (column) => column);
 }
 
 class $$TaskEntityTableTableManager extends RootTableManager<
@@ -592,6 +757,7 @@ class $$TaskEntityTableTableManager extends RootTableManager<
     TaskEntityData,
     $$TaskEntityTableFilterComposer,
     $$TaskEntityTableOrderingComposer,
+    $$TaskEntityTableAnnotationComposer,
     $$TaskEntityTableCreateCompanionBuilder,
     $$TaskEntityTableUpdateCompanionBuilder,
     (
@@ -604,36 +770,34 @@ class $$TaskEntityTableTableManager extends RootTableManager<
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$TaskEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$TaskEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$TaskEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TaskEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TaskEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
             Value<String> description = const Value.absent(),
             Value<DateTime> createdAt = const Value.absent(),
-            Value<DateTime> updatedAt = const Value.absent(),
             Value<DateTime?> finishedAt = const Value.absent(),
           }) =>
               TaskEntityCompanion(
             id: id,
             description: description,
             createdAt: createdAt,
-            updatedAt: updatedAt,
             finishedAt: finishedAt,
           ),
           createCompanionCallback: ({
             Value<int> id = const Value.absent(),
             required String description,
             required DateTime createdAt,
-            required DateTime updatedAt,
             Value<DateTime?> finishedAt = const Value.absent(),
           }) =>
               TaskEntityCompanion.insert(
             id: id,
             description: description,
             createdAt: createdAt,
-            updatedAt: updatedAt,
             finishedAt: finishedAt,
           ),
           withReferenceMapper: (p0) => p0
@@ -649,6 +813,7 @@ typedef $$TaskEntityTableProcessedTableManager = ProcessedTableManager<
     TaskEntityData,
     $$TaskEntityTableFilterComposer,
     $$TaskEntityTableOrderingComposer,
+    $$TaskEntityTableAnnotationComposer,
     $$TaskEntityTableCreateCompanionBuilder,
     $$TaskEntityTableUpdateCompanionBuilder,
     (
@@ -657,77 +822,91 @@ typedef $$TaskEntityTableProcessedTableManager = ProcessedTableManager<
     ),
     TaskEntityData,
     PrefetchHooks Function()>;
-typedef $$TagEntityTableCreateCompanionBuilder = TagEntityCompanion Function({
-  Value<int> id,
-  required String name,
+typedef $$DayEntityTableCreateCompanionBuilder = DayEntityCompanion Function({
+  required int id,
+  Value<int> rowid,
 });
-typedef $$TagEntityTableUpdateCompanionBuilder = TagEntityCompanion Function({
+typedef $$DayEntityTableUpdateCompanionBuilder = DayEntityCompanion Function({
   Value<int> id,
-  Value<String> name,
+  Value<int> rowid,
 });
 
-class $$TagEntityTableFilterComposer
-    extends FilterComposer<_$Database, $TagEntityTable> {
-  $$TagEntityTableFilterComposer(super.$state);
-  ColumnFilters<int> get id => $state.composableBuilder(
-      column: $state.table.id,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
-
-  ColumnFilters<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnFilters(column, joinBuilders: joinBuilders));
+class $$DayEntityTableFilterComposer
+    extends Composer<_$Database, $DayEntityTable> {
+  $$DayEntityTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
 }
 
-class $$TagEntityTableOrderingComposer
-    extends OrderingComposer<_$Database, $TagEntityTable> {
-  $$TagEntityTableOrderingComposer(super.$state);
-  ColumnOrderings<int> get id => $state.composableBuilder(
-      column: $state.table.id,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
-
-  ColumnOrderings<String> get name => $state.composableBuilder(
-      column: $state.table.name,
-      builder: (column, joinBuilders) =>
-          ColumnOrderings(column, joinBuilders: joinBuilders));
+class $$DayEntityTableOrderingComposer
+    extends Composer<_$Database, $DayEntityTable> {
+  $$DayEntityTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
 }
 
-class $$TagEntityTableTableManager extends RootTableManager<
+class $$DayEntityTableAnnotationComposer
+    extends Composer<_$Database, $DayEntityTable> {
+  $$DayEntityTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+}
+
+class $$DayEntityTableTableManager extends RootTableManager<
     _$Database,
-    $TagEntityTable,
-    TagEntityData,
-    $$TagEntityTableFilterComposer,
-    $$TagEntityTableOrderingComposer,
-    $$TagEntityTableCreateCompanionBuilder,
-    $$TagEntityTableUpdateCompanionBuilder,
-    (TagEntityData, BaseReferences<_$Database, $TagEntityTable, TagEntityData>),
-    TagEntityData,
+    $DayEntityTable,
+    DayEntityData,
+    $$DayEntityTableFilterComposer,
+    $$DayEntityTableOrderingComposer,
+    $$DayEntityTableAnnotationComposer,
+    $$DayEntityTableCreateCompanionBuilder,
+    $$DayEntityTableUpdateCompanionBuilder,
+    (DayEntityData, BaseReferences<_$Database, $DayEntityTable, DayEntityData>),
+    DayEntityData,
     PrefetchHooks Function()> {
-  $$TagEntityTableTableManager(_$Database db, $TagEntityTable table)
+  $$DayEntityTableTableManager(_$Database db, $DayEntityTable table)
       : super(TableManagerState(
           db: db,
           table: table,
-          filteringComposer:
-              $$TagEntityTableFilterComposer(ComposerState(db, table)),
-          orderingComposer:
-              $$TagEntityTableOrderingComposer(ComposerState(db, table)),
+          createFilteringComposer: () =>
+              $$DayEntityTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DayEntityTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DayEntityTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
           }) =>
-              TagEntityCompanion(
+              DayEntityCompanion(
             id: id,
-            name: name,
+            rowid: rowid,
           ),
           createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String name,
+            required int id,
+            Value<int> rowid = const Value.absent(),
           }) =>
-              TagEntityCompanion.insert(
+              DayEntityCompanion.insert(
             id: id,
-            name: name,
+            rowid: rowid,
           ),
           withReferenceMapper: (p0) => p0
               .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
@@ -736,16 +915,156 @@ class $$TagEntityTableTableManager extends RootTableManager<
         ));
 }
 
-typedef $$TagEntityTableProcessedTableManager = ProcessedTableManager<
+typedef $$DayEntityTableProcessedTableManager = ProcessedTableManager<
     _$Database,
-    $TagEntityTable,
-    TagEntityData,
-    $$TagEntityTableFilterComposer,
-    $$TagEntityTableOrderingComposer,
-    $$TagEntityTableCreateCompanionBuilder,
-    $$TagEntityTableUpdateCompanionBuilder,
-    (TagEntityData, BaseReferences<_$Database, $TagEntityTable, TagEntityData>),
-    TagEntityData,
+    $DayEntityTable,
+    DayEntityData,
+    $$DayEntityTableFilterComposer,
+    $$DayEntityTableOrderingComposer,
+    $$DayEntityTableAnnotationComposer,
+    $$DayEntityTableCreateCompanionBuilder,
+    $$DayEntityTableUpdateCompanionBuilder,
+    (DayEntityData, BaseReferences<_$Database, $DayEntityTable, DayEntityData>),
+    DayEntityData,
+    PrefetchHooks Function()>;
+typedef $$DayTaskAssignmentTableCreateCompanionBuilder
+    = DayTaskAssignmentCompanion Function({
+  Value<int> id,
+  required int dayId,
+  required int taskId,
+});
+typedef $$DayTaskAssignmentTableUpdateCompanionBuilder
+    = DayTaskAssignmentCompanion Function({
+  Value<int> id,
+  Value<int> dayId,
+  Value<int> taskId,
+});
+
+class $$DayTaskAssignmentTableFilterComposer
+    extends Composer<_$Database, $DayTaskAssignmentTable> {
+  $$DayTaskAssignmentTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get dayId => $composableBuilder(
+      column: $table.dayId, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get taskId => $composableBuilder(
+      column: $table.taskId, builder: (column) => ColumnFilters(column));
+}
+
+class $$DayTaskAssignmentTableOrderingComposer
+    extends Composer<_$Database, $DayTaskAssignmentTable> {
+  $$DayTaskAssignmentTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+      column: $table.id, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get dayId => $composableBuilder(
+      column: $table.dayId, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get taskId => $composableBuilder(
+      column: $table.taskId, builder: (column) => ColumnOrderings(column));
+}
+
+class $$DayTaskAssignmentTableAnnotationComposer
+    extends Composer<_$Database, $DayTaskAssignmentTable> {
+  $$DayTaskAssignmentTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get dayId =>
+      $composableBuilder(column: $table.dayId, builder: (column) => column);
+
+  GeneratedColumn<int> get taskId =>
+      $composableBuilder(column: $table.taskId, builder: (column) => column);
+}
+
+class $$DayTaskAssignmentTableTableManager extends RootTableManager<
+    _$Database,
+    $DayTaskAssignmentTable,
+    DayTaskAssignmentData,
+    $$DayTaskAssignmentTableFilterComposer,
+    $$DayTaskAssignmentTableOrderingComposer,
+    $$DayTaskAssignmentTableAnnotationComposer,
+    $$DayTaskAssignmentTableCreateCompanionBuilder,
+    $$DayTaskAssignmentTableUpdateCompanionBuilder,
+    (
+      DayTaskAssignmentData,
+      BaseReferences<_$Database, $DayTaskAssignmentTable, DayTaskAssignmentData>
+    ),
+    DayTaskAssignmentData,
+    PrefetchHooks Function()> {
+  $$DayTaskAssignmentTableTableManager(
+      _$Database db, $DayTaskAssignmentTable table)
+      : super(TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$DayTaskAssignmentTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$DayTaskAssignmentTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$DayTaskAssignmentTableAnnotationComposer(
+                  $db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int> dayId = const Value.absent(),
+            Value<int> taskId = const Value.absent(),
+          }) =>
+              DayTaskAssignmentCompanion(
+            id: id,
+            dayId: dayId,
+            taskId: taskId,
+          ),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            required int dayId,
+            required int taskId,
+          }) =>
+              DayTaskAssignmentCompanion.insert(
+            id: id,
+            dayId: dayId,
+            taskId: taskId,
+          ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ));
+}
+
+typedef $$DayTaskAssignmentTableProcessedTableManager = ProcessedTableManager<
+    _$Database,
+    $DayTaskAssignmentTable,
+    DayTaskAssignmentData,
+    $$DayTaskAssignmentTableFilterComposer,
+    $$DayTaskAssignmentTableOrderingComposer,
+    $$DayTaskAssignmentTableAnnotationComposer,
+    $$DayTaskAssignmentTableCreateCompanionBuilder,
+    $$DayTaskAssignmentTableUpdateCompanionBuilder,
+    (
+      DayTaskAssignmentData,
+      BaseReferences<_$Database, $DayTaskAssignmentTable, DayTaskAssignmentData>
+    ),
+    DayTaskAssignmentData,
     PrefetchHooks Function()>;
 
 class $DatabaseManager {
@@ -753,6 +1072,8 @@ class $DatabaseManager {
   $DatabaseManager(this._db);
   $$TaskEntityTableTableManager get taskEntity =>
       $$TaskEntityTableTableManager(_db, _db.taskEntity);
-  $$TagEntityTableTableManager get tagEntity =>
-      $$TagEntityTableTableManager(_db, _db.tagEntity);
+  $$DayEntityTableTableManager get dayEntity =>
+      $$DayEntityTableTableManager(_db, _db.dayEntity);
+  $$DayTaskAssignmentTableTableManager get dayTaskAssignment =>
+      $$DayTaskAssignmentTableTableManager(_db, _db.dayTaskAssignment);
 }

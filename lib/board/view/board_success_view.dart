@@ -20,7 +20,6 @@ class BoardSuccessView extends StatelessWidget {
         return ListTile(
           leading: Checkbox(value: true, onChanged: (value) {}),
           title: Text(task.description),
-          
         );
       },
       separatorBuilder: (context, index) => const SizedBox(height: 16),

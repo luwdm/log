@@ -4,7 +4,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [TaskEntity, TagEntity])
+@DriftDatabase(tables: [TaskEntity, DayEntity, DayTaskAssignment])
 class Database extends _$Database {
   Database() : super(_openConnection());
 

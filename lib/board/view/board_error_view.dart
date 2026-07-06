@@ -5,6 +5,6 @@ class BoardErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const SliverToBoxAdapter(child: Text('Error'));
+    return const SliverToBoxAdapter(child: Text('Error'));
   }
 }

@@ -11,9 +11,6 @@ class TaskEntity extends Table {
   /// The creation date of the task.
   DateTimeColumn get createdAt => dateTime()();
 
-  /// The date of the last update.
-  DateTimeColumn get updatedAt => dateTime()();
-
   /// The date when the user finished the task.
   DateTimeColumn get finishedAt => dateTime().nullable()();
 }
