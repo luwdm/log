@@ -7,10 +7,8 @@ import 'package:task_repository/task_repository.dart';
 part 'board_state.dart';
 
 class BoardCubit extends Cubit<BoardState> {
-  BoardCubit({
-    required TaskRepository taskRepository,
-  })  : _taskRepository = taskRepository,
-        super(const BoardLoadingState());
+  BoardCubit({required this._taskRepository})
+    : super(const BoardLoadingState());
 
   final TaskRepository _taskRepository;
   StreamSubscription<List<Task>>? _tasksSubscription;

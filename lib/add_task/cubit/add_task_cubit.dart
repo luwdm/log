@@ -4,13 +4,12 @@ import 'package:form_inputs/form_inputs.dart';
 import 'package:formz/formz.dart';
 import 'package:task_repository/task_repository.dart';
 
-part 'create_task_state.dart';
+part 'add_task_state.dart';
 
-class CreateTaskCubit extends Cubit<CreateTaskState> {
-  CreateTaskCubit({
-    required TaskRepository taskRepository,
-  })  : _taskRepository = taskRepository,
-        super(const CreateTaskState());
+class AddTaskCubit extends Cubit<AddTaskState> {
+  AddTaskCubit({required TaskRepository taskRepository})
+    : _taskRepository = taskRepository,
+      super(const AddTaskState());
 
   final TaskRepository _taskRepository;
 
@@ -28,9 +27,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     if (!state.isFormValid) return;
     emit(state.copyWith(status: FormzSubmissionStatus.inProgress));
     try {
-      await _taskRepository.createTask(
-        taskTitle: state.taskTitle.value,
-      );
+      await _taskRepository.createTask(description: state.taskTitle.value);
       emit(state.copyWith(status: FormzSubmissionStatus.success));
     } on CreateTaskFailure catch (error) {
       emit(state.copyWith(status: FormzSubmissionStatus.failure, error: error));

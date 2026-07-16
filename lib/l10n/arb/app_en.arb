@@ -1,3 +1,27 @@
 {
-  "@@locale": "en"
+  "@@locale": "en",
+  "addProject": "Add Project",
+  "@addProject": {
+    "description": "Add project"
+  },
+  "addTask": "Add Task",
+  "@addTask": {
+    "description": "Add task"
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "cancel"
+  },
+  "add": "Add",
+  "@add": {
+    "description": "add"
+  },
+  "title": "Title",
+  "@title": {
+    "description": "title"
+  },
+  "tasks": "Tasks",
+  "@tasks": {
+    "description": "tasks"
+  }
 }

@@ -9,7 +9,7 @@ class TaskEntity extends Table {
   TextColumn get description => text()();
 
   /// The creation date of the task.
-  DateTimeColumn get createdAt => dateTime()();
+  DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 
   /// The date when the user finished the task.
   DateTimeColumn get finishedAt => dateTime().nullable()();

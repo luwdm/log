@@ -1,7 +1,7 @@
-part of 'create_task_cubit.dart';
+part of 'add_task_cubit.dart';
 
-class CreateTaskState with EquatableMixin {
-  const CreateTaskState({
+class AddTaskState with Equatable {
+  const AddTaskState({
     this.taskTitle = const TaskTitle.pure(),
     this.status = FormzSubmissionStatus.initial,
     this.isFormValid = false,
@@ -16,13 +16,13 @@ class CreateTaskState with EquatableMixin {
   @override
   List<Object?> get props => [taskTitle, status, isFormValid, error];
 
-  CreateTaskState copyWith({
+  AddTaskState copyWith({
     TaskTitle? taskTitle,
     FormzSubmissionStatus? status,
     bool? isFormValid,
     Exception? error,
   }) {
-    return CreateTaskState(
+    return AddTaskState(
       taskTitle: taskTitle ?? this.taskTitle,
       status: status ?? this.status,
       isFormValid: isFormValid ?? this.isFormValid,

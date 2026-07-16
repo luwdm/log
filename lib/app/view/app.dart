@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_repository/task_repository.dart';
+import 'package:work_log/add_task/add_task.dart';
 import 'package:work_log/board/board.dart';
-import 'package:work_log/create_task/create_task.dart';
+import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/theme/theme.dart';
 
 class App extends StatelessWidget {
-  const App({
-    required TaskRepository taskRepository,
-    super.key,
-  }) : _taskRepository = taskRepository;
+  const App({required this._taskRepository, super.key});
 
   final TaskRepository _taskRepository;
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider.value(value: _taskRepository),
-      ],
+      providers: [RepositoryProvider.value(value: _taskRepository)],
       child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         theme: theme,
         home: const _AppBody(),
       ),
@@ -54,7 +52,7 @@ class _AppBodyState extends State<_AppBody> {
               onPressed: () {
                 showDialog<void>(
                   context: context,
-                  builder: (context) => const CreateTaskDialog(),
+                  builder: (context) => const AddTaskDialog(),
                 );
                 // Add your onPressed code here!
               },

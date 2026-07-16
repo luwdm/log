@@ -1,6 +1,6 @@
 part of 'board_cubit.dart';
 
-sealed class BoardState with EquatableMixin {
+sealed class BoardState with Equatable {
   const BoardState();
 }
 
@@ -12,9 +12,7 @@ class BoardLoadingState extends BoardState {
 }
 
 class BoardSuccessState extends BoardState {
-  const BoardSuccessState({
-    required this.tasks,
-  });
+  const BoardSuccessState({required this.tasks});
 
   final List<Task> tasks;
 
