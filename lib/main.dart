@@ -1,13 +1,14 @@
-import 'package:database/database.dart';
 import 'package:flutter/material.dart';
-import 'package:task_repository/task_repository.dart';
 import 'package:work_log/app/app.dart';
+import 'package:work_log/database/daos/log_dao.dart';
+import 'package:work_log/database/database.dart';
+import 'package:work_log/domain/log_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final database = Database();
-  final taskRepository = TaskRepository(database: database);
+  final logRepository = LogRepository(LogDao(database));
 
-  runApp(App(taskRepository: taskRepository));
+  runApp(App(logRepository: logRepository));
 }
