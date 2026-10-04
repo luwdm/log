@@ -9,4 +9,8 @@ class LogDao(super.attachedDatabase)
     extends DatabaseAccessor<Database>
     with _$LogDaoMixin {
   Stream<List<LogTableData>> watch() => select(logTable).watch();
+
+  Future<void> create(LogTableCompanion log) async {
+    await into(logTable).insert(log);
+  }
 }

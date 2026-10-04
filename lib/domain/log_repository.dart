@@ -10,6 +10,13 @@ class const LogRepository(final LogDao _logDao) {
     required String ideas,
     required String nextThings,
   }) async {
-    // TODO: Add create logic here.
+    await _logDao.create(
+      LogTableCompanion.insert(
+        accomplishments: accomplishments,
+        improvements: improvements,
+        ideas: ideas,
+        nextThings: nextThings,
+      ),
+    );
   }
 }

@@ -23,5 +23,41 @@
   "tasks": "Tasks",
   "@tasks": {
     "description": "tasks"
+  },
+  "whatDidYouAccomplishToday": "What did you accomplish today?",
+  "@whatDidYouAccomplishToday": {
+    "description": "What did you accomplish"
+  },
+  "whatCanYouImproveOptional": "What can you improve? (optional)",
+  "@whatCanYouImproveOptional": {
+    "description": "What can you improve"
+  },
+  "anyIdeasOptional": "Any ideas? (optional)",
+  "@anyIdeasOptional": {
+    "description": "doYouHaveAnyIdeasOrThought"
+  },
+  "whatsTheNextStep": "What's the next step?",
+  "@whatsTheNextStep": {
+    "description": "whatsTheNextStep"
+  },
+  "addLog": "Add Log",
+  "@addLog": {
+    "description": "Add log"
+  },
+  "accomplishments": "Accomplishments",
+  "@accomplishments": {
+    "description": "accomplishments"
+  },
+  "nextStep": "Next step",
+  "@nextStep": {
+    "description": "nextStep"
+  },
+  "ideas": "Ideas",
+  "@ideas": {
+    "description": "ideas"
+  },
+  "plannedImprovements": "Planned improvements",
+  "@plannedImprovements": {
+    "description": "Planned improvements"
   }
 }

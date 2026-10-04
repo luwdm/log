@@ -1,9 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/logs/cubit/logs_cubit.dart';
+import 'package:work_log/logs/widgets/logs_item.dart';
+import 'package:work_log/router/router.dart';
 
 class const LogsPage({super.key}) extends StatelessWidget {
   @override
@@ -23,13 +26,33 @@ Widget logsPageViewPreview() {
 class const LogsPageView({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(title: Text('Logs')),
-          const _SliverLogsBody(),
+          SliverAppBar.large(
+            title: Text('Logs'),
+            actions: [NewLogButton(), SizedBox(width: 16)],
+          ),
+          SliverPadding(
+            padding: .symmetric(horizontal: 16),
+            sliver: _SliverLogsBody(),
+          ),
         ],
       ),
+    );
+  }
+}
+
+class NewLogButton extends StatelessWidget {
+  const new({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return FilledButton(
+      onPressed: () => const NewLogRoute().go(context),
+      child: Text(l10n.addLog),
     );
   }
 }
@@ -66,8 +89,19 @@ class const SliverLogList({required final List<LogTableData> logs, super.key})
   @override
   Widget build(BuildContext context) {
     return SliverList.separated(
-      itemBuilder: (context, index) {},
-      separatorBuilder: (context, index) {},
+      itemCount: logs.length,
+      itemBuilder: (context, index) {
+        final log = logs[index];
+        return LogsItem(
+          accomplishments: log.accomplishments,
+          improvements: log.improvements,
+          ideas: log.ideas,
+          nextThings: log.nextThings,
+        );
+      },
+      separatorBuilder: (context, index) {
+        return const SizedBox(height: 16);
+      },
     );
   }
 }

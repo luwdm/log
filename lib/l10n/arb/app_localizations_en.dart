@@ -26,4 +26,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tasks => 'Tasks';
+
+  @override
+  String get whatDidYouAccomplishToday => 'What did you accomplish today?';
+
+  @override
+  String get whatCanYouImproveOptional => 'What can you improve? (optional)';
+
+  @override
+  String get anyIdeasOptional => 'Any ideas? (optional)';
+
+  @override
+  String get whatsTheNextStep => 'What\'s the next step?';
+
+  @override
+  String get addLog => 'Add Log';
+
+  @override
+  String get accomplishments => 'Accomplishments';
+
+  @override
+  String get nextStep => 'Next step';
+
+  @override
+  String get ideas => 'Ideas';
+
+  @override
+  String get plannedImprovements => 'Planned improvements';
 }

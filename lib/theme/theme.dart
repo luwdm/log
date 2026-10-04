@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 ThemeData get theme => ThemeData(
-      colorScheme: ColorScheme.light(
-        primary: Colors.black,
-        secondary: Colors.grey.shade200,
-      ),
-      snackBarTheme: SnackBarThemeData(
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-    );
+  colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+  // colorScheme: ColorScheme.light(
+  //   primary: Colors.black,
+  //   secondary: Colors.grey.shade200,
+  // ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(),
+    filled: true,
+    floatingLabelBehavior: .always,
+  ),
+);

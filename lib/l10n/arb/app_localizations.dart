@@ -129,6 +129,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tasks'**
   String get tasks;
+
+  /// What did you accomplish
+  ///
+  /// In en, this message translates to:
+  /// **'What did you accomplish today?'**
+  String get whatDidYouAccomplishToday;
+
+  /// What can you improve
+  ///
+  /// In en, this message translates to:
+  /// **'What can you improve? (optional)'**
+  String get whatCanYouImproveOptional;
+
+  /// doYouHaveAnyIdeasOrThought
+  ///
+  /// In en, this message translates to:
+  /// **'Any ideas? (optional)'**
+  String get anyIdeasOptional;
+
+  /// whatsTheNextStep
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s the next step?'**
+  String get whatsTheNextStep;
+
+  /// Add log
+  ///
+  /// In en, this message translates to:
+  /// **'Add Log'**
+  String get addLog;
+
+  /// accomplishments
+  ///
+  /// In en, this message translates to:
+  /// **'Accomplishments'**
+  String get accomplishments;
+
+  /// nextStep
+  ///
+  /// In en, this message translates to:
+  /// **'Next step'**
+  String get nextStep;
+
+  /// ideas
+  ///
+  /// In en, this message translates to:
+  /// **'Ideas'**
+  String get ideas;
+
+  /// Planned improvements
+  ///
+  /// In en, this message translates to:
+  /// **'Planned improvements'**
+  String get plannedImprovements;
 }
 
 class _AppLocalizationsDelegate
