@@ -1,11 +1,10 @@
-import 'package:material_ui/material_ui.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/domain/log_repository.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/logs/cubit/logs_cubit.dart';
-import 'package:work_log/logs/widgets/logs_item.dart';
 import 'package:work_log/logs/widgets/widgets.dart';
 import 'package:work_log/router/router.dart';
 
