@@ -13,4 +13,8 @@ class LogDao(super.attachedDatabase)
   Future<void> upsert(LogTableCompanion log) async {
     await into(logTable).insertOnConflictUpdate(log);
   }
+
+  Future<void> remove(int id) async {
+    await (delete(logTable)..where((t) => t.id.equals(id))).go();
+  }
 }

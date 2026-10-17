@@ -21,4 +21,6 @@ class const LogRepository(final LogDao _logDao) {
       ),
     );
   }
+
+  Future<void> delete(int id) => _logDao.remove(id);
 }

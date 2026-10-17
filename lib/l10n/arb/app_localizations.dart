@@ -124,6 +124,12 @@ abstract class AppLocalizations {
   /// **'Update'**
   String get update;
 
+  /// delete
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
   /// title
   ///
   /// In en, this message translates to:
@@ -213,6 +219,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{date}'**
   String logDateFormat(DateTime date);
+
+  /// Info when user is about to delete the log
+  ///
+  /// In en, this message translates to:
+  /// **'Achtung. Der Log kann nach der Löschung nicht wiederhergestellt werden. Bist du dir sicher?'**
+  String get infoWhenUserIsAboutToDeleteTheLog;
+
+  /// Delete log
+  ///
+  /// In en, this message translates to:
+  /// **'Log löschen'**
+  String get deleteLog;
 }
 
 class _AppLocalizationsDelegate

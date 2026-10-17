@@ -25,6 +25,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get update => 'Update';
 
   @override
+  String get delete => 'Delete';
+
+  @override
   String get title => 'Title';
 
   @override
@@ -76,4 +79,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
     return '$dateString';
   }
+
+  @override
+  String get infoWhenUserIsAboutToDeleteTheLog =>
+      'Achtung. Der Log kann nach der Löschung nicht wiederhergestellt werden. Bist du dir sicher?';
+
+  @override
+  String get deleteLog => 'Log löschen';
 }

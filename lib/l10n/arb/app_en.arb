@@ -20,6 +20,10 @@
   "@update": {
     "description": "update"
   },
+  "delete": "Delete",
+  "@delete": {
+    "description": "delete"
+  },
   "title": "Title",
   "@title": {
     "description": "title"
@@ -85,5 +89,13 @@
         "format": "MMMMEEEEd"
       }
     }
+  },
+  "infoWhenUserIsAboutToDeleteTheLog": "Achtung. Der Log kann nach der Löschung nicht wiederhergestellt werden. Bist du dir sicher?",
+  "@infoWhenUserIsAboutToDeleteTheLog": {
+    "description": "Info when user is about to delete the log"
+  },
+  "deleteLog": "Log löschen",
+  "@deleteLog": {
+    "description": "Delete log"
   }
 }

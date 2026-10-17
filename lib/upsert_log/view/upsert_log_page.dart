@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/database/database.dart';
+import 'package:work_log/delete_log/delete_log.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/upsert_log/cubit/upsert_log_cubit.dart';
 import 'package:work_log/widgets/widgets.dart';
@@ -46,6 +47,7 @@ class UpsertLogPageView extends StatelessWidget {
             _NextStepsInput(),
             _ImprovementsInput(),
             _UpsertButton(),
+            _DeleteButton(),
           ],
         ),
       ),
@@ -188,6 +190,29 @@ class _UpsertButton extends StatelessWidget {
     return FilledButton(
       onPressed: context.read<UpsertLogCubit>().upsertLog,
       child: Text(text),
+    );
+  }
+}
+
+class _DeleteButton extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final colorScheme = ColorScheme.of(context);
+    final logId = context.select((UpsertLogCubit cubit) => cubit.state.logId);
+    if (logId == null) return const SizedBox.shrink();
+    return FilledButton(
+      onPressed: () => showDialog<void>(
+        context: context,
+        builder: (_) => DeleteLogDialog(id: logId),
+      ),
+      style: FilledButton.styleFrom(
+        backgroundColor: colorScheme.error,
+        foregroundColor: colorScheme.onError,
+      ),
+      child: Text(l10n.delete),
     );
   }
 }
