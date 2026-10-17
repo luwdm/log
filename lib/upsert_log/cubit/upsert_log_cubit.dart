@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:work_log/upsert_log/upsert_log.dart';
-import 'package:work_log/upsert_log/formz/next_steps_input.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/upsert_log/formz/next_steps_input.dart';
+import 'package:work_log/upsert_log/upsert_log.dart';
 
 part 'upsert_log_state.dart';
 
@@ -19,6 +19,8 @@ class UpsertLogCubit({
           accomplishments: .dirty(log.accomplishments),
           nextSteps: .dirty(log.nextThings),
           improvements: log.improvements,
+          logDate: log.date,
+          logId: log.id,
         );
       }());
 
@@ -36,7 +38,7 @@ class UpsertLogCubit({
     emit(state.copyWith(nextSteps: nextSteps));
   }
 
-  Future<void> addLog() async {
+  Future<void> upsertLog() async {
     emit(
       state.copyWith(
         accomplishments: .dirty(state.accomplishments.value),
@@ -50,10 +52,12 @@ class UpsertLogCubit({
     if (!isFormValid) return;
     if (state.status == .inProgress) return;
     try {
-      await _logRepository.add(
+      await _logRepository.upsert(
+        id: state.logId,
         accomplishments: state.accomplishments.value,
         nextThings: state.nextSteps.value,
         improvements: state.improvements,
+        date: state.logDate,
       );
       emit(state.copyWith(status: .success));
     } on Exception catch (e) {

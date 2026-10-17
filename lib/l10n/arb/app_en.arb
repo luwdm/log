@@ -16,6 +16,10 @@
   "@add": {
     "description": "add"
   },
+  "update": "Update",
+  "@update": {
+    "description": "update"
+  },
   "title": "Title",
   "@title": {
     "description": "title"
@@ -71,5 +75,15 @@
   "intro": "Intro",
   "@intro": { 
     "description": "intro"
+  },
+  "logDateFormat": "{date}",
+  "@logDateFormat": {
+    "description": "Log list item date format",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd"
+      }
+    }
   }
 }

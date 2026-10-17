@@ -106,6 +106,7 @@ class const SliverLogList({required final List<LogTableData> logs, super.key})
           accomplishments: log.accomplishments,
           improvements: log.improvements,
           nextThings: log.nextThings,
+          date: log.date,
         );
       },
       separatorBuilder: (_, _) => const SizedBox(height: 24),

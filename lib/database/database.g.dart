@@ -30,6 +30,7 @@ class $LogTableTable extends LogTable
     false,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
   static const VerificationMeta _accomplishmentsMeta = const VerificationMeta(
     'accomplishments',

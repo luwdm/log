@@ -13,7 +13,7 @@ class const App({required final LogRepository logRepository, super.key})
       providers: [RepositoryProvider.value(value: logRepository)],
       child: MaterialApp.router(
         theme: theme,
-        localizationsDelegates: [
+        localizationsDelegates: const [
           ...AppLocalizations.localizationsDelegates,
           GlobalMaterialLocalizations.delegate,
         ],

@@ -7,12 +7,14 @@ class LogsItem extends StatelessWidget {
     required this.accomplishments,
     required this.improvements,
     required this.nextThings,
+    required this.date,
     super.key,
   });
 
   final String accomplishments;
   final String improvements;
   final String nextThings;
+  final DateTime date;
   final VoidCallback onPressed;
 
   @override
@@ -39,7 +41,7 @@ class LogsItem extends StatelessWidget {
                   mainAxisSize: .min,
                   spacing: 12,
                   children: [
-                    Text('21. Okt 2026', style: textTheme.titleLarge),
+                    Text(l10n.logDateFormat(date), style: textTheme.titleLarge),
                     _Prompt(
                       label: l10n.accomplishments,
                       answer: accomplishments,

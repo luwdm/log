@@ -118,6 +118,12 @@ abstract class AppLocalizations {
   /// **'Add'**
   String get add;
 
+  /// update
+  ///
+  /// In en, this message translates to:
+  /// **'Update'**
+  String get update;
+
   /// title
   ///
   /// In en, this message translates to:
@@ -201,6 +207,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Intro'**
   String get intro;
+
+  /// Log list item date format
+  ///
+  /// In en, this message translates to:
+  /// **'{date}'**
+  String logDateFormat(DateTime date);
 }
 
 class _AppLocalizationsDelegate

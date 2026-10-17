@@ -10,7 +10,7 @@ class LogDao(super.attachedDatabase)
     with _$LogDaoMixin {
   Stream<List<LogTableData>> watch() => select(logTable).watch();
 
-  Future<void> create(LogTableCompanion log) async {
-    await into(logTable).insert(log);
+  Future<void> upsert(LogTableCompanion log) async {
+    await into(logTable).insertOnConflictUpdate(log);
   }
 }

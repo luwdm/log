@@ -22,6 +22,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get add => 'Add';
 
   @override
+  String get update => 'Update';
+
+  @override
   String get title => 'Title';
 
   @override
@@ -63,4 +66,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get intro => 'Intro';
+
+  @override
+  String logDateFormat(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
 }

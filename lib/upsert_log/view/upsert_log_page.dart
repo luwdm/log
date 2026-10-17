@@ -34,10 +34,8 @@ class UpsertLogPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.addLog)),
+      appBar: AppBar(title: const _AppBarTitle()),
       body: const Padding(
         padding: .symmetric(horizontal: 16, vertical: 12),
         child: Column(
@@ -47,11 +45,23 @@ class UpsertLogPageView extends StatelessWidget {
             _AccomplishmentsInput(),
             _NextStepsInput(),
             _ImprovementsInput(),
-            _AddButton(),
+            _UpsertButton(),
           ],
         ),
       ),
     );
+  }
+}
+
+class _AppBarTitle extends StatelessWidget {
+  const new();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final date = context.select((UpsertLogCubit cubit) => cubit.state.logDate);
+    if (date == null) return Text(l10n.add);
+    return Text(l10n.logDateFormat(date));
   }
 }
 
@@ -162,16 +172,22 @@ class _NextStepsInputState extends State<_NextStepsInput> {
   }
 }
 
-class _AddButton extends StatelessWidget {
+class _UpsertButton extends StatelessWidget {
   const new();
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
+    final isUpdateScreen = context.select(
+      (UpsertLogCubit cubit) => cubit.state.logDate != null,
+    );
+
+    final text = isUpdateScreen ? l10n.update : l10n.add;
+
     return FilledButton(
-      onPressed: context.read<UpsertLogCubit>().addLog,
-      child: Text(l10n.add),
+      onPressed: context.read<UpsertLogCubit>().upsertLog,
+      child: Text(text),
     );
   }
 }
