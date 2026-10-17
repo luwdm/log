@@ -59,5 +59,17 @@
   "plannedImprovements": "Planned improvements",
   "@plannedImprovements": {
     "description": "Planned improvements"
+  },
+  "logs": "Logs",
+  "@logs": {
+    "description": "logs"
+  },
+  "logsterIntro": "Logster is a journal app that helps you to track your daily accomplishments, your ideas to improve and planning the next big step for your day.",
+  "@logsterIntro": {
+    "description": "Logster intro"
+  },
+  "intro": "Intro",
+  "@intro": { 
+    "description": "intro"
   }
 }

@@ -53,4 +53,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get plannedImprovements => 'Planned improvements';
+
+  @override
+  String get logs => 'Logs';
+
+  @override
+  String get logsterIntro =>
+      'Logster is a journal app that helps you to track your daily accomplishments, your ideas to improve and planning the next big step for your day.';
+
+  @override
+  String get intro => 'Intro';
 }

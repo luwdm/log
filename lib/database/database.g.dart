@@ -22,6 +22,15 @@ class $LogTableTable extends LogTable
       'PRIMARY KEY AUTOINCREMENT',
     ),
   );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _accomplishmentsMeta = const VerificationMeta(
     'accomplishments',
   );
@@ -44,15 +53,6 @@ class $LogTableTable extends LogTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _ideasMeta = const VerificationMeta('ideas');
-  @override
-  late final GeneratedColumn<String> ideas = GeneratedColumn<String>(
-    'ideas',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _nextThingsMeta = const VerificationMeta(
     'nextThings',
   );
@@ -67,9 +67,9 @@ class $LogTableTable extends LogTable
   @override
   List<GeneratedColumn> get $columns => [
     id,
+    date,
     accomplishments,
     improvements,
-    ideas,
     nextThings,
   ];
   @override
@@ -86,6 +86,14 @@ class $LogTableTable extends LogTable
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dateMeta);
     }
     if (data.containsKey('accomplishments')) {
       context.handle(
@@ -109,14 +117,6 @@ class $LogTableTable extends LogTable
     } else if (isInserting) {
       context.missing(_improvementsMeta);
     }
-    if (data.containsKey('ideas')) {
-      context.handle(
-        _ideasMeta,
-        ideas.isAcceptableOrUnknown(data['ideas']!, _ideasMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_ideasMeta);
-    }
     if (data.containsKey('next_things')) {
       context.handle(
         _nextThingsMeta,
@@ -138,6 +138,10 @@ class $LogTableTable extends LogTable
         DriftSqlType.int,
         data['${effectivePrefix}id'],
       )!,
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}date'],
+      )!,
       accomplishments: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}accomplishments'],
@@ -145,10 +149,6 @@ class $LogTableTable extends LogTable
       improvements: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}improvements'],
-      )!,
-      ideas: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}ideas'],
       )!,
       nextThings: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -165,24 +165,24 @@ class $LogTableTable extends LogTable
 
 class LogTableData extends DataClass implements Insertable<LogTableData> {
   final int id;
+  final DateTime date;
   final String accomplishments;
   final String improvements;
-  final String ideas;
   final String nextThings;
   const LogTableData({
     required this.id,
+    required this.date,
     required this.accomplishments,
     required this.improvements,
-    required this.ideas,
     required this.nextThings,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
+    map['date'] = Variable<DateTime>(date);
     map['accomplishments'] = Variable<String>(accomplishments);
     map['improvements'] = Variable<String>(improvements);
-    map['ideas'] = Variable<String>(ideas);
     map['next_things'] = Variable<String>(nextThings);
     return map;
   }
@@ -190,9 +190,9 @@ class LogTableData extends DataClass implements Insertable<LogTableData> {
   LogTableCompanion toCompanion(bool nullToAbsent) {
     return LogTableCompanion(
       id: Value(id),
+      date: Value(date),
       accomplishments: Value(accomplishments),
       improvements: Value(improvements),
-      ideas: Value(ideas),
       nextThings: Value(nextThings),
     );
   }
@@ -204,9 +204,9 @@ class LogTableData extends DataClass implements Insertable<LogTableData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return LogTableData(
       id: serializer.fromJson<int>(json['id']),
+      date: serializer.fromJson<DateTime>(json['date']),
       accomplishments: serializer.fromJson<String>(json['accomplishments']),
       improvements: serializer.fromJson<String>(json['improvements']),
-      ideas: serializer.fromJson<String>(json['ideas']),
       nextThings: serializer.fromJson<String>(json['nextThings']),
     );
   }
@@ -215,36 +215,36 @@ class LogTableData extends DataClass implements Insertable<LogTableData> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
+      'date': serializer.toJson<DateTime>(date),
       'accomplishments': serializer.toJson<String>(accomplishments),
       'improvements': serializer.toJson<String>(improvements),
-      'ideas': serializer.toJson<String>(ideas),
       'nextThings': serializer.toJson<String>(nextThings),
     };
   }
 
   LogTableData copyWith({
     int? id,
+    DateTime? date,
     String? accomplishments,
     String? improvements,
-    String? ideas,
     String? nextThings,
   }) => LogTableData(
     id: id ?? this.id,
+    date: date ?? this.date,
     accomplishments: accomplishments ?? this.accomplishments,
     improvements: improvements ?? this.improvements,
-    ideas: ideas ?? this.ideas,
     nextThings: nextThings ?? this.nextThings,
   );
   LogTableData copyWithCompanion(LogTableCompanion data) {
     return LogTableData(
       id: data.id.present ? data.id.value : this.id,
+      date: data.date.present ? data.date.value : this.date,
       accomplishments: data.accomplishments.present
           ? data.accomplishments.value
           : this.accomplishments,
       improvements: data.improvements.present
           ? data.improvements.value
           : this.improvements,
-      ideas: data.ideas.present ? data.ideas.value : this.ideas,
       nextThings: data.nextThings.present
           ? data.nextThings.value
           : this.nextThings,
@@ -255,9 +255,9 @@ class LogTableData extends DataClass implements Insertable<LogTableData> {
   String toString() {
     return (StringBuffer('LogTableData(')
           ..write('id: $id, ')
+          ..write('date: $date, ')
           ..write('accomplishments: $accomplishments, ')
           ..write('improvements: $improvements, ')
-          ..write('ideas: $ideas, ')
           ..write('nextThings: $nextThings')
           ..write(')'))
         .toString();
@@ -265,69 +265,69 @@ class LogTableData extends DataClass implements Insertable<LogTableData> {
 
   @override
   int get hashCode =>
-      Object.hash(id, accomplishments, improvements, ideas, nextThings);
+      Object.hash(id, date, accomplishments, improvements, nextThings);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is LogTableData &&
           other.id == this.id &&
+          other.date == this.date &&
           other.accomplishments == this.accomplishments &&
           other.improvements == this.improvements &&
-          other.ideas == this.ideas &&
           other.nextThings == this.nextThings);
 }
 
 class LogTableCompanion extends UpdateCompanion<LogTableData> {
   final Value<int> id;
+  final Value<DateTime> date;
   final Value<String> accomplishments;
   final Value<String> improvements;
-  final Value<String> ideas;
   final Value<String> nextThings;
   const LogTableCompanion({
     this.id = const Value.absent(),
+    this.date = const Value.absent(),
     this.accomplishments = const Value.absent(),
     this.improvements = const Value.absent(),
-    this.ideas = const Value.absent(),
     this.nextThings = const Value.absent(),
   });
   LogTableCompanion.insert({
     this.id = const Value.absent(),
+    required DateTime date,
     required String accomplishments,
     required String improvements,
-    required String ideas,
     required String nextThings,
-  }) : accomplishments = Value(accomplishments),
+  }) : date = Value(date),
+       accomplishments = Value(accomplishments),
        improvements = Value(improvements),
-       ideas = Value(ideas),
        nextThings = Value(nextThings);
   static Insertable<LogTableData> custom({
     Expression<int>? id,
+    Expression<DateTime>? date,
     Expression<String>? accomplishments,
     Expression<String>? improvements,
-    Expression<String>? ideas,
     Expression<String>? nextThings,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
+      if (date != null) 'date': date,
       if (accomplishments != null) 'accomplishments': accomplishments,
       if (improvements != null) 'improvements': improvements,
-      if (ideas != null) 'ideas': ideas,
       if (nextThings != null) 'next_things': nextThings,
     });
   }
 
   LogTableCompanion copyWith({
     Value<int>? id,
+    Value<DateTime>? date,
     Value<String>? accomplishments,
     Value<String>? improvements,
-    Value<String>? ideas,
     Value<String>? nextThings,
   }) {
     return LogTableCompanion(
       id: id ?? this.id,
+      date: date ?? this.date,
       accomplishments: accomplishments ?? this.accomplishments,
       improvements: improvements ?? this.improvements,
-      ideas: ideas ?? this.ideas,
       nextThings: nextThings ?? this.nextThings,
     );
   }
@@ -338,14 +338,14 @@ class LogTableCompanion extends UpdateCompanion<LogTableData> {
     if (id.present) {
       map['id'] = Variable<int>(id.value);
     }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
     if (accomplishments.present) {
       map['accomplishments'] = Variable<String>(accomplishments.value);
     }
     if (improvements.present) {
       map['improvements'] = Variable<String>(improvements.value);
-    }
-    if (ideas.present) {
-      map['ideas'] = Variable<String>(ideas.value);
     }
     if (nextThings.present) {
       map['next_things'] = Variable<String>(nextThings.value);
@@ -357,9 +357,9 @@ class LogTableCompanion extends UpdateCompanion<LogTableData> {
   String toString() {
     return (StringBuffer('LogTableCompanion(')
           ..write('id: $id, ')
+          ..write('date: $date, ')
           ..write('accomplishments: $accomplishments, ')
           ..write('improvements: $improvements, ')
-          ..write('ideas: $ideas, ')
           ..write('nextThings: $nextThings')
           ..write(')'))
         .toString();
@@ -379,16 +379,16 @@ abstract class _$Database extends GeneratedDatabase {
 
 typedef $$LogTableTableCreateCompanionBuilder = LogTableCompanion Function({
   Value<int> id,
+  required DateTime date,
   required String accomplishments,
   required String improvements,
-  required String ideas,
   required String nextThings,
 });
 typedef $$LogTableTableUpdateCompanionBuilder = LogTableCompanion Function({
   Value<int> id,
+  Value<DateTime> date,
   Value<String> accomplishments,
   Value<String> improvements,
-  Value<String> ideas,
   Value<String> nextThings,
 });
 
@@ -406,6 +406,11 @@ class $$LogTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get accomplishments => $composableBuilder(
     column: $table.accomplishments,
     builder: (column) => ColumnFilters(column),
@@ -413,11 +418,6 @@ class $$LogTableTableFilterComposer
 
   ColumnFilters<String> get improvements => $composableBuilder(
     column: $table.improvements,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get ideas => $composableBuilder(
-    column: $table.ideas,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -441,6 +441,11 @@ class $$LogTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get accomplishments => $composableBuilder(
     column: $table.accomplishments,
     builder: (column) => ColumnOrderings(column),
@@ -448,11 +453,6 @@ class $$LogTableTableOrderingComposer
 
   ColumnOrderings<String> get improvements => $composableBuilder(
     column: $table.improvements,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get ideas => $composableBuilder(
-    column: $table.ideas,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -474,6 +474,9 @@ class $$LogTableTableAnnotationComposer
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+
   GeneratedColumn<String> get accomplishments => $composableBuilder(
     column: $table.accomplishments,
     builder: (column) => column,
@@ -483,9 +486,6 @@ class $$LogTableTableAnnotationComposer
     column: $table.improvements,
     builder: (column) => column,
   );
-
-  GeneratedColumn<String> get ideas =>
-      $composableBuilder(column: $table.ideas, builder: (column) => column);
 
   GeneratedColumn<String> get nextThings => $composableBuilder(
     column: $table.nextThings,
@@ -525,29 +525,29 @@ class $$LogTableTableTableManager
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
                 Value<String> accomplishments = const Value.absent(),
                 Value<String> improvements = const Value.absent(),
-                Value<String> ideas = const Value.absent(),
                 Value<String> nextThings = const Value.absent(),
               }) => LogTableCompanion(
                 id: id,
+                date: date,
                 accomplishments: accomplishments,
                 improvements: improvements,
-                ideas: ideas,
                 nextThings: nextThings,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
+                required DateTime date,
                 required String accomplishments,
                 required String improvements,
-                required String ideas,
                 required String nextThings,
               }) => LogTableCompanion.insert(
                 id: id,
+                date: date,
                 accomplishments: accomplishments,
                 improvements: improvements,
-                ideas: ideas,
                 nextThings: nextThings,
               ),
           withReferenceMapper: (p0) => p0

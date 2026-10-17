@@ -1,37 +1,59 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
+import 'package:work_log/add_log/add_log.dart';
+import 'package:work_log/add_log/formz/next_steps_input.dart';
+import 'package:work_log/database/database.dart';
 import 'package:work_log/domain/log_repository.dart';
 
 part 'add_log_state.dart';
 
-class AddLogCubit(final LogRepository _logRepository)
-    extends Cubit<AddLogState> {
-  this : super(const AddLogState());
+class AddLogCubit({
+  required final LogRepository _logRepository,
+  LogTableData? log,
+}) extends Cubit<AddLogState> {
+  this
+    : super(() {
+        if (log == null) return const AddLogState();
+        return AddLogState(
+          accomplishments: .dirty(log.accomplishments),
+          nextSteps: .dirty(log.nextThings),
+          improvements: log.improvements,
+        );
+      }());
 
   void changeAccomplishments(String value) {
-    emit(state.copyWith(accomplishments: value));
+    final accomplishments = AccomplishmentsInput.dirty(value);
+    emit(state.copyWith(accomplishments: accomplishments));
   }
 
   void changeImprovements(String value) {
     emit(state.copyWith(improvements: value));
   }
 
-  void changeIdeas(String value) {
-    emit(state.copyWith(ideas: value));
-  }
-
   void changeNextThings(String value) {
-    emit(state.copyWith(nextThings: value));
+    final nextSteps = NextStepsInput.dirty(value);
+    emit(state.copyWith(nextSteps: nextSteps));
   }
 
   Future<void> addLog() async {
+    emit(
+      state.copyWith(
+        accomplishments: .dirty(state.accomplishments.value),
+        nextSteps: .dirty(state.nextSteps.value),
+      ),
+    );
+    final isFormValid = Formz.validate([
+      state.accomplishments,
+      state.nextSteps,
+    ]);
+    if (!isFormValid) return;
     if (state.status == .inProgress) return;
     try {
       await _logRepository.add(
-        accomplishments: state.accomplishments,
+        accomplishments: state.accomplishments.value,
+        nextThings: state.nextSteps.value,
         improvements: state.improvements,
-        ideas: state.ideas,
-        nextThings: state.nextThings,
       );
       emit(state.copyWith(status: .success));
     } on Exception catch (e) {

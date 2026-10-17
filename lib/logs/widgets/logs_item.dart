@@ -3,17 +3,17 @@ import 'package:work_log/l10n/arb/app_localizations.dart';
 
 class LogsItem extends StatelessWidget {
   const LogsItem({
+    required this.onPressed,
     required this.accomplishments,
     required this.improvements,
-    required this.ideas,
     required this.nextThings,
     super.key,
   });
 
   final String accomplishments;
   final String improvements;
-  final String ideas;
   final String nextThings;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -22,24 +22,38 @@ class LogsItem extends StatelessWidget {
     final colorScheme = ColorScheme.of(context);
 
     return Material(
+      type: .card,
       color: colorScheme.surfaceContainer,
-      borderRadius: .circular(24),
+      borderRadius: .circular(32),
       child: InkWell(
-        onTap: () {},
-        borderRadius: .circular(24),
+        onTap: onPressed,
+        borderRadius: .circular(32),
         child: Padding(
-          padding: const .symmetric(horizontal: 16, vertical: 12),
-          child: Column(
-            crossAxisAlignment: .stretch,
-            mainAxisSize: .min,
-            spacing: 12,
+          padding: const .symmetric(horizontal: 20, vertical: 20),
+          child: Row(
+            spacing: 16,
             children: [
-              Text('21. Okt 2026', style: textTheme.titleLarge),
-              _Prompt(label: l10n.accomplishments, answer: accomplishments),
-              _Prompt(label: l10n.nextStep, answer: nextThings),
-              if (ideas.isNotEmpty) _Prompt(label: l10n.ideas, answer: ideas),
-              if (improvements.isNotEmpty)
-                _Prompt(label: l10n.plannedImprovements, answer: improvements),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: .stretch,
+                  mainAxisSize: .min,
+                  spacing: 12,
+                  children: [
+                    Text('21. Okt 2026', style: textTheme.titleLarge),
+                    _Prompt(
+                      label: l10n.accomplishments,
+                      answer: accomplishments,
+                    ),
+                    _Prompt(label: l10n.nextStep, answer: nextThings),
+                    if (improvements.isNotEmpty)
+                      _Prompt(
+                        label: l10n.plannedImprovements,
+                        answer: improvements,
+                      ),
+                  ],
+                ),
+              ),
+              Icon(Icons.chevron_right, size: 32, color: colorScheme.onSurface),
             ],
           ),
         ),
@@ -59,20 +73,18 @@ class _Prompt extends StatelessWidget {
     final colorScheme = ColorScheme.of(context);
     final textTheme = TextTheme.of(context);
 
-    return Container(
-      decoration: BoxDecoration(
-        color: colorScheme.secondaryContainer,
-        borderRadius: .circular(8),
-      ),
-      padding: const .symmetric(horizontal: 12, vertical: 8),
-
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          Text(label, style: textTheme.titleMedium),
-          Text(answer),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: .start,
+      children: [
+        Text(
+          label,
+          style: textTheme.titleMedium?.copyWith(color: colorScheme.onSurface),
+        ),
+        Text(
+          answer,
+          style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
+        ),
+      ],
     );
   }
 }

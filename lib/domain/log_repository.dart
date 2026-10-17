@@ -7,15 +7,15 @@ class const LogRepository(final LogDao _logDao) {
   Future<void> add({
     required String accomplishments,
     required String improvements,
-    required String ideas,
     required String nextThings,
   }) async {
+    final today = DateTime.now();
     await _logDao.create(
       LogTableCompanion.insert(
         accomplishments: accomplishments,
         improvements: improvements,
-        ideas: ideas,
         nextThings: nextThings,
+        date: today,
       ),
     );
   }

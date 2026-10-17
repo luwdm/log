@@ -183,6 +183,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Planned improvements'**
   String get plannedImprovements;
+
+  /// logs
+  ///
+  /// In en, this message translates to:
+  /// **'Logs'**
+  String get logs;
+
+  /// Logster intro
+  ///
+  /// In en, this message translates to:
+  /// **'Logster is a journal app that helps you to track your daily accomplishments, your ideas to improve and planning the next big step for your day.'**
+  String get logsterIntro;
+
+  /// intro
+  ///
+  /// In en, this message translates to:
+  /// **'Intro'**
+  String get intro;
 }
 
 class _AppLocalizationsDelegate

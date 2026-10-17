@@ -2,16 +2,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/add_log/cubit/add_log_cubit.dart';
+import 'package:work_log/database/database.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/widgets/widgets.dart';
 
 class AddLogPage extends StatelessWidget {
-  const new({super.key});
+  const new({this.log, super.key});
+
+  final LogTableData? log;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddLogCubit(context.read()),
+      create: (context) => AddLogCubit(logRepository: context.read(), log: log),
       child: BlocListener<AddLogCubit, AddLogState>(
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
@@ -41,9 +44,8 @@ class AddLogPageView extends StatelessWidget {
           crossAxisAlignment: .stretch,
           children: [
             _AccomplishmentsInput(),
-            _NextThingInput(),
+            _NextStepsInput(),
             _ImprovementsInput(),
-            _IdeasInput(),
             _AddButton(),
           ],
         ),
@@ -52,56 +54,107 @@ class AddLogPageView extends StatelessWidget {
   }
 }
 
-class _AccomplishmentsInput extends StatelessWidget {
-  const new({super.key});
+class _AccomplishmentsInput extends StatefulWidget {
+  const new();
+
+  @override
+  State<_AccomplishmentsInput> createState() => _AccomplishmentsInputState();
+}
+
+class _AccomplishmentsInputState extends State<_AccomplishmentsInput> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final accomplishments = BlocProvider.of<AddLogCubit>(context)
+        .state
+        .accomplishments
+        .value;
+    _controller = TextEditingController(text: accomplishments);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
     return AppTextField(
+      controller: _controller,
       onChanged: context.read<AddLogCubit>().changeAccomplishments,
       labelText: l10n.whatDidYouAccomplishToday,
     );
   }
 }
 
-class _ImprovementsInput extends StatelessWidget {
-  const new({super.key});
+class _ImprovementsInput extends StatefulWidget {
+  const new();
+
+  @override
+  State<_ImprovementsInput> createState() => _ImprovementsInputState();
+}
+
+class _ImprovementsInputState extends State<_ImprovementsInput> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final improvements = BlocProvider.of<AddLogCubit>(context)
+        .state
+        .improvements;
+    _controller = TextEditingController(text: improvements);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
     return AppTextField(
+      controller: _controller,
       onChanged: context.read<AddLogCubit>().changeImprovements,
       labelText: l10n.whatCanYouImproveOptional,
     );
   }
 }
 
-class _IdeasInput extends StatelessWidget {
-  const new({super.key});
+class _NextStepsInput extends StatefulWidget {
+  const new();
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
-    return AppTextField(
-      onChanged: context.read<AddLogCubit>().changeIdeas,
-      labelText: l10n.anyIdeasOptional,
-    );
-  }
+  State<_NextStepsInput> createState() => _NextStepsInputState();
 }
 
-class _NextThingInput extends StatelessWidget {
-  const new({super.key});
+class _NextStepsInputState extends State<_NextStepsInput> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    final nextSteps = BlocProvider.of<AddLogCubit>(context)
+        .state
+        .nextSteps
+        .value;
+    _controller = TextEditingController(text: nextSteps);
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
     return AppTextField(
+      controller: _controller,
       onChanged: context.read<AddLogCubit>().changeNextThings,
       labelText: l10n.whatsTheNextStep,
     );
@@ -109,7 +162,7 @@ class _NextThingInput extends StatelessWidget {
 }
 
 class _AddButton extends StatelessWidget {
-  const new({super.key});
+  const new();
 
   @override
   Widget build(BuildContext context) {

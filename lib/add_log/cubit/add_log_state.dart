@@ -1,27 +1,25 @@
 part of 'add_log_cubit.dart';
 
-enum AddLogFormStatus { initial, inProgress, success, failure }
-
 class const AddLogState({
-  final String accomplishments = '',
+  final AccomplishmentsInput accomplishments = const .pure(),
+  final NextStepsInput nextSteps = const .pure(),
   final String improvements = '',
-  final String ideas = '',
-  final String nextThings = '',
-  final AddLogFormStatus status = .initial,
+  final FormzSubmissionStatus status = .initial,
+  final bool isFormValid = false,
 }) with Equatable {
   AddLogState copyWith({
-    String? accomplishments,
+    AccomplishmentsInput? accomplishments,
+    NextStepsInput? nextSteps,
     String? improvements,
-    String? ideas,
-    String? nextThings,
-    AddLogFormStatus? status,
+    FormzSubmissionStatus? status,
+    bool? isFormValid,
   }) {
     return AddLogState(
       accomplishments: accomplishments ?? this.accomplishments,
       improvements: improvements ?? this.improvements,
-      ideas: ideas ?? this.ideas,
-      nextThings: nextThings ?? this.nextThings,
+      nextSteps: nextSteps ?? this.nextSteps,
       status: status ?? this.status,
+      isFormValid: isFormValid ?? this.isFormValid,
     );
   }
 
@@ -29,8 +27,8 @@ class const AddLogState({
   List<Object?> get props => [
     accomplishments,
     improvements,
-    ideas,
-    nextThings,
+    nextSteps,
     status,
+    isFormValid,
   ];
 }

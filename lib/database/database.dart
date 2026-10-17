@@ -11,5 +11,6 @@ class Database() extends _$Database {
   @override
   int get schemaVersion => 1;
 
-  static QueryExecutor _openConnection() => driftDatabase(name: 'log_database');
+  static QueryExecutor _openConnection() =>
+      driftDatabase(name: 'log_database2');
 }
