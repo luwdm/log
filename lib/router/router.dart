@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:work_log/add_log/add_log.dart';
+import 'package:work_log/upsert_log/upsert_log.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/logs/logs.dart';
 
@@ -25,7 +25,7 @@ class const LogsRoute() extends GoRouteData with $LogsRoute {
 class const AddLogRoute() extends GoRouteData with $AddLogRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const AddLogPage();
+    return const UpsertLogPage();
   }
 }
 
@@ -34,6 +34,6 @@ class const UpdateLogRoute({required final LogTableData $extra})
     with $UpdateLogRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return AddLogPage(log: $extra);
+    return UpsertLogPage(log: $extra);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/preview/app_preview.dart';
 
-class AddLogItem extends StatelessWidget {
+class UpsertLogItem extends StatelessWidget {
   const new({super.key});
 
   @override
@@ -34,5 +34,5 @@ class AddLogItem extends StatelessWidget {
 
 @AppPreview(group: 'AddLogItem')
 Widget addLogItemPreview() {
-  return SizedBox(width: 400, child: const AddLogItem());
+  return SizedBox(width: 400, child: const UpsertLogItem());
 }

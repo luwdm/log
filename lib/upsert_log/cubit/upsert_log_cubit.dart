@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:work_log/add_log/add_log.dart';
-import 'package:work_log/add_log/formz/next_steps_input.dart';
+import 'package:work_log/upsert_log/upsert_log.dart';
+import 'package:work_log/upsert_log/formz/next_steps_input.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/domain/log_repository.dart';
 
-part 'add_log_state.dart';
+part 'upsert_log_state.dart';
 
-class AddLogCubit({
+class UpsertLogCubit({
   required final LogRepository _logRepository,
   LogTableData? log,
-}) extends Cubit<AddLogState> {
+}) extends Cubit<UpsertLogState> {
   this
     : super(() {
-        if (log == null) return const AddLogState();
-        return AddLogState(
+        if (log == null) return const UpsertLogState();
+        return UpsertLogState(
           accomplishments: .dirty(log.accomplishments),
           nextSteps: .dirty(log.nextThings),
           improvements: log.improvements,
