@@ -97,12 +97,14 @@ class const SliverLogList({required final List<LogTableData> logs, super.key})
       itemCount: logs.length,
       itemBuilder: (context, index) {
         final log = logs[index];
-        return LogsItem(
-          onPressed: () => UpdateLogRoute($extra: log).go(context),
-          accomplishments: log.accomplishments,
-          improvements: log.improvements,
-          nextThings: log.nextThings,
-          date: log.date,
+        return Center(
+          child: LogsItem(
+            onPressed: () => UpdateLogRoute($extra: log).go(context),
+            accomplishments: log.accomplishments,
+            improvements: log.improvements,
+            nextThings: log.nextThings,
+            date: log.date,
+          ),
         );
       },
       separatorBuilder: (_, _) => const SizedBox(height: 24),

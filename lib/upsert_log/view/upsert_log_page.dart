@@ -33,18 +33,20 @@ class const UpsertLogPageView({super.key}) extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const _AppBarTitle()),
-      body: const Padding(
-        padding: .symmetric(horizontal: 16, vertical: 12),
-        child: Column(
-          spacing: 20,
-          crossAxisAlignment: .stretch,
-          children: [
-            _AccomplishmentsInput(),
-            _NextStepsInput(),
-            _ImprovementsInput(),
-            _UpsertButton(),
-            _DeleteButton(),
-          ],
+      body: const SingleChildScrollView(
+        child: Padding(
+          padding: .symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            spacing: 20,
+            crossAxisAlignment: .stretch,
+            children: [
+              _AccomplishmentsInput(),
+              _NextStepsInput(),
+              _ImprovementsInput(),
+              _UpsertButton(),
+              _DeleteButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -208,6 +210,7 @@ class const _DeleteButton() extends StatelessWidget {
       style: FilledButton.styleFrom(
         backgroundColor: colorScheme.error,
         foregroundColor: colorScheme.onError,
+        
       ),
       child: Text(l10n.delete),
     );

@@ -20,13 +20,16 @@ class const AppTextField({
       children: [
         Text(
           labelText,
-          style: textTheme.titleMedium?.copyWith(color: colorScheme.onSurface),
+          style: textTheme.labelLarge?.copyWith(color: colorScheme.onSurface),
         ),
         TextFormField(
           controller: controller,
           initialValue: initialValue,
           onChanged: onChanged,
           decoration: InputDecoration(errorText: errorText),
+          minLines: 1,
+          // Users should be able to enter whatever they want.
+          maxLines: 10000,
         ),
       ],
     );

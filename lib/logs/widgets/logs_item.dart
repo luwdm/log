@@ -30,12 +30,13 @@ class LogsItem extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         borderRadius: .circular(32),
-        child: Padding(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 800),
           padding: const .symmetric(horizontal: 20, vertical: 20),
           child: Row(
             spacing: 16,
             children: [
-              Expanded(
+              Flexible(
                 child: Column(
                   crossAxisAlignment: .stretch,
                   mainAxisSize: .min,
@@ -80,7 +81,7 @@ class _Prompt extends StatelessWidget {
       children: [
         Text(
           label,
-          style: textTheme.titleMedium?.copyWith(color: colorScheme.onSurface),
+          style: textTheme.labelLarge?.copyWith(color: colorScheme.onSurface),
         ),
         Text(
           answer,
