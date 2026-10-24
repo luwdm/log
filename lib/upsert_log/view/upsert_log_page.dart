@@ -4,14 +4,12 @@ import 'package:material_ui/material_ui.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/delete_log/delete_log.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
+import 'package:work_log/l10n/extensions/required_input_error_localization.dart';
 import 'package:work_log/upsert_log/cubit/upsert_log_cubit.dart';
 import 'package:work_log/widgets/widgets.dart';
 
-class UpsertLogPage extends StatelessWidget {
-  const new({this.log, super.key});
-
-  final LogTableData? log;
-
+class const UpsertLogPage({final LogTableData? log, super.key})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -30,9 +28,7 @@ class UpsertLogPage extends StatelessWidget {
   }
 }
 
-class UpsertLogPageView extends StatelessWidget {
-  const new({super.key});
-
+class const UpsertLogPageView({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,21 +51,17 @@ class UpsertLogPageView extends StatelessWidget {
   }
 }
 
-class _AppBarTitle extends StatelessWidget {
-  const new();
-
+class const _AppBarTitle() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final date = context.select((UpsertLogCubit cubit) => cubit.state.logDate);
-    if (date == null) return Text(l10n.add);
+    if (date == null) return Text(l10n.addLog);
     return Text(l10n.logDateFormat(date));
   }
 }
 
-class _AccomplishmentsInput extends StatefulWidget {
-  const new();
-
+class const _AccomplishmentsInput() extends StatefulWidget {
   @override
   State<_AccomplishmentsInput> createState() => _AccomplishmentsInputState();
 }
@@ -97,17 +89,20 @@ class _AccomplishmentsInputState extends State<_AccomplishmentsInput> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
+    final error = context.select(
+      (UpsertLogCubit cubit) => cubit.state.accomplishments.displayError,
+    );
+
     return AppTextField(
       controller: _controller,
       onChanged: context.read<UpsertLogCubit>().changeAccomplishments,
       labelText: l10n.whatDidYouAccomplishToday,
+      errorText: error?.localized(l10n),
     );
   }
 }
 
-class _ImprovementsInput extends StatefulWidget {
-  const new();
-
+class const _ImprovementsInput() extends StatefulWidget {
   @override
   State<_ImprovementsInput> createState() => _ImprovementsInputState();
 }
@@ -142,9 +137,7 @@ class _ImprovementsInputState extends State<_ImprovementsInput> {
   }
 }
 
-class _NextStepsInput extends StatefulWidget {
-  const new();
-
+class const _NextStepsInput() extends StatefulWidget {
   @override
   State<_NextStepsInput> createState() => _NextStepsInputState();
 }
@@ -166,17 +159,20 @@ class _NextStepsInputState extends State<_NextStepsInput> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
+    final error = context.select(
+      (UpsertLogCubit cubit) => cubit.state.nextSteps.displayError,
+    );
+
     return AppTextField(
       controller: _controller,
       onChanged: context.read<UpsertLogCubit>().changeNextThings,
       labelText: l10n.whatsTheNextStep,
+      errorText: error?.localized(l10n),
     );
   }
 }
 
-class _UpsertButton extends StatelessWidget {
-  const new();
-
+class const _UpsertButton() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -194,15 +190,16 @@ class _UpsertButton extends StatelessWidget {
   }
 }
 
-class _DeleteButton extends StatelessWidget {
-  const new();
-
+class const _DeleteButton() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final colorScheme = ColorScheme.of(context);
+
     final logId = context.select((UpsertLogCubit cubit) => cubit.state.logId);
+
     if (logId == null) return const SizedBox.shrink();
+
     return FilledButton(
       onPressed: () => showDialog<void>(
         context: context,

@@ -223,14 +223,20 @@ abstract class AppLocalizations {
   /// Info when user is about to delete the log
   ///
   /// In en, this message translates to:
-  /// **'Achtung. Der Log kann nach der Löschung nicht wiederhergestellt werden. Bist du dir sicher?'**
+  /// **'This log will be deleted permanently. Are you sure?'**
   String get infoWhenUserIsAboutToDeleteTheLog;
 
   /// Delete log
   ///
   /// In en, this message translates to:
-  /// **'Log löschen'**
+  /// **'Delete Log'**
   String get deleteLog;
+
+  /// This field is required
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get thisFieldIsRequired;
 }
 
 class _AppLocalizationsDelegate

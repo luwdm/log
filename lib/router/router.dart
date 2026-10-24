@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:work_log/upsert_log/upsert_log.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/logs/logs.dart';
+import 'package:work_log/upsert_log/upsert_log.dart';
 
 part 'router.g.dart';
 
@@ -12,7 +13,10 @@ final goRouter = GoRouter(initialLocation: '/logs', routes: $appRoutes);
   path: '/logs',
   routes: [
     TypedGoRoute<AddLogRoute>(path: 'add'),
-    TypedGoRoute<UpdateLogRoute>(path: 'details'),
+    TypedGoRoute<UpdateLogRoute>(
+      path: 'details',
+      routes: [TypedGoRoute(path: 'delete')],
+    ),
   ],
 )
 class const LogsRoute() extends GoRouteData with $LogsRoute {

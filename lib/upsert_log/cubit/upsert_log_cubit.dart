@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:work_log/database/database.dart';
 import 'package:work_log/domain/log_repository.dart';
-import 'package:work_log/upsert_log/formz/next_steps_input.dart';
+import 'package:work_log/upsert_log/formz/required_input.dart';
 import 'package:work_log/upsert_log/upsert_log.dart';
 
 part 'upsert_log_state.dart';
@@ -24,9 +24,14 @@ class UpsertLogCubit({
         );
       }());
 
+  @override
+  void emit(UpsertLogState state) {
+    if (isClosed) return;
+    super.emit(state);
+  }
+
   void changeAccomplishments(String value) {
-    final accomplishments = AccomplishmentsInput.dirty(value);
-    emit(state.copyWith(accomplishments: accomplishments));
+    emit(state.copyWith(accomplishments: .dirty(value)));
   }
 
   void changeImprovements(String value) {
@@ -34,8 +39,7 @@ class UpsertLogCubit({
   }
 
   void changeNextThings(String value) {
-    final nextSteps = NextStepsInput.dirty(value);
-    emit(state.copyWith(nextSteps: nextSteps));
+    emit(state.copyWith(nextSteps: .dirty(value)));
   }
 
   Future<void> upsertLog() async {
@@ -60,8 +64,8 @@ class UpsertLogCubit({
         date: state.logDate,
       );
       emit(state.copyWith(status: .success));
-    } on Exception catch (e) {
-      addError(e);
+    } on Exception catch (e, stackTrace) {
+      addError(e, stackTrace);
       emit(state.copyWith(status: .failure));
     }
   }

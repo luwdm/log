@@ -90,12 +90,16 @@
       }
     }
   },
-  "infoWhenUserIsAboutToDeleteTheLog": "Achtung. Der Log kann nach der Löschung nicht wiederhergestellt werden. Bist du dir sicher?",
+  "infoWhenUserIsAboutToDeleteTheLog": "This log will be deleted permanently. Are you sure?",
   "@infoWhenUserIsAboutToDeleteTheLog": {
     "description": "Info when user is about to delete the log"
   },
-  "deleteLog": "Log löschen",
+  "deleteLog": "Delete Log",
   "@deleteLog": {
     "description": "Delete log"
+  },
+  "thisFieldIsRequired": "This field is required",
+  "@thisFieldIsRequired": {
+    "description": "This field is required"
   }
 }

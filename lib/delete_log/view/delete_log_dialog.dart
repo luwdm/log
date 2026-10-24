@@ -1,15 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:work_log/delete_log/delete_log.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
+import 'package:work_log/router/router.dart';
 
-class DeleteLogDialog extends StatelessWidget {
-  const new({required this.id, super.key});
-
-  final int id;
-
+class const DeleteLogDialog({required final int id, super.key})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -20,9 +17,7 @@ class DeleteLogDialog extends StatelessWidget {
   }
 }
 
-class DeleteLogDialogView extends StatelessWidget {
-  const new({super.key});
-
+class const DeleteLogDialogView({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -30,7 +25,7 @@ class DeleteLogDialogView extends StatelessWidget {
     return BlocListener<DeleteLogCubit, DeleteLogState>(
       listener: (context, state) {
         if (state.status == .failure || state.status == .success) {
-          // TODO: Move back to the overview.
+          const LogsRoute().go(context);
         }
       },
       child: AlertDialog(

@@ -1,8 +1,8 @@
 part of 'upsert_log_cubit.dart';
 
 class const UpsertLogState({
-  final AccomplishmentsInput accomplishments = const .pure(),
-  final NextStepsInput nextSteps = const .pure(),
+  final RequiredInput accomplishments = const .pure(),
+  final RequiredInput nextSteps = const .pure(),
   final String improvements = '',
   final FormzSubmissionStatus status = .initial,
 
@@ -14,8 +14,8 @@ class const UpsertLogState({
   final bool isFormValid = false,
 }) with Equatable {
   UpsertLogState copyWith({
-    AccomplishmentsInput? accomplishments,
-    NextStepsInput? nextSteps,
+    RequiredInput? accomplishments,
+    RequiredInput? nextSteps,
     String? improvements,
     FormzSubmissionStatus? status,
     DateTime? logDate,

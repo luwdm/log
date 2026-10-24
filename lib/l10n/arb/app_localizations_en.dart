@@ -82,8 +82,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get infoWhenUserIsAboutToDeleteTheLog =>
-      'Achtung. Der Log kann nach der Löschung nicht wiederhergestellt werden. Bist du dir sicher?';
+      'This log will be deleted permanently. Are you sure?';
 
   @override
-  String get deleteLog => 'Log löschen';
+  String get deleteLog => 'Delete Log';
+
+  @override
+  String get thisFieldIsRequired => 'This field is required';
 }
