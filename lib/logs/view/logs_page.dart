@@ -31,8 +31,9 @@ class const LogsPageView({super.key}) extends StatelessWidget {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(
+          SliverAppBar(
             title: Text(l10n.logs),
+            centerTitle: true,
             actions: const [AddLogButton(), SizedBox(width: 16)],
           ),
           const SliverPadding(
@@ -45,9 +46,7 @@ class const LogsPageView({super.key}) extends StatelessWidget {
   }
 }
 
-class AddLogButton extends StatelessWidget {
-  const new({super.key});
-
+class const AddLogButton({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

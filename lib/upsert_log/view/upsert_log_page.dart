@@ -5,6 +5,7 @@ import 'package:work_log/database/database.dart';
 import 'package:work_log/delete_log/delete_log.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/l10n/extensions/required_input_error_localization.dart';
+import 'package:work_log/theme/app_sizes.dart';
 import 'package:work_log/upsert_log/cubit/upsert_log_cubit.dart';
 import 'package:work_log/widgets/widgets.dart';
 
@@ -33,19 +34,24 @@ class const UpsertLogPageView({super.key}) extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const _AppBarTitle()),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
-          padding: .symmetric(horizontal: 16, vertical: 12),
-          child: Column(
-            spacing: 20,
-            crossAxisAlignment: .stretch,
-            children: [
-              _AccomplishmentsInput(),
-              _NextStepsInput(),
-              _ImprovementsInput(),
-              _UpsertButton(),
-              _DeleteButton(),
-            ],
+          padding: const .symmetric(horizontal: 16, vertical: 12),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: AppSizes.maxWidth),
+              child: const Column(
+                spacing: 20,
+                crossAxisAlignment: .stretch,
+                children: [
+                  _AccomplishmentsInput(),
+                  _NextStepsInput(),
+                  _ImprovementsInput(),
+                  _UpsertButton(),
+                  _DeleteButton(),
+                ],
+              ),
+            ),
           ),
         ),
       ),

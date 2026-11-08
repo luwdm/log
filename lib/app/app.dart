@@ -3,7 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:work_log/domain/log_repository.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/router/router.dart';
-import 'package:work_log/theme/theme.dart';
+import 'package:work_log/theme/app_theme.dart';
 
 class const App({required final LogRepository logRepository, super.key})
     extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
+import 'package:work_log/theme/app_sizes.dart';
 
 class const LogsItem({
   required final VoidCallback onPressed,
@@ -23,7 +24,7 @@ class const LogsItem({
         onTap: onPressed,
         borderRadius: .circular(32),
         child: Container(
-          constraints: const BoxConstraints(maxWidth: 800),
+          constraints: const BoxConstraints(maxWidth: AppSizes.maxWidth),
           padding: const .symmetric(horizontal: 20, vertical: 20),
           child: Row(
             spacing: 16,

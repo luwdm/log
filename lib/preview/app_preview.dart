@@ -1,6 +1,6 @@
 import 'package:flutter/widget_previews.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:work_log/theme/theme.dart';
+import 'package:work_log/theme/app_theme.dart';
 
 final class const AppPreview({
   super.name,
