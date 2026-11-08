@@ -57,7 +57,9 @@ class const _AppBarTitle() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final date = context.select((UpsertLogCubit cubit) => cubit.state.logDate);
+    final date = context.select<UpsertLogCubit, DateTime?>(
+      (cubit) => cubit.state.logDate,
+    );
     if (date == null) return Text(l10n.addLog);
     return Text(l10n.logDateFormat(date));
   }
@@ -210,7 +212,6 @@ class const _DeleteButton() extends StatelessWidget {
       style: FilledButton.styleFrom(
         backgroundColor: colorScheme.error,
         foregroundColor: colorScheme.onError,
-        
       ),
       child: Text(l10n.delete),
     );

@@ -1,25 +1,15 @@
 part of 'logs_cubit.dart';
 
-sealed class LogsState with Equatable {
-  const LogsState();
-
+sealed class const LogsState() with Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class LogsLoadingState extends LogsState {
-  const LogsLoadingState();
-}
+class const LogsLoadingState() extends LogsState;
 
-class LogsSuccessState extends LogsState {
-  const LogsSuccessState(this.logs);
-
-  final List<LogTableData> logs;
-
+class const LogsSuccessState(final List<LogTableData> logs) extends LogsState {
   @override
   List<Object?> get props => [logs];
 }
 
-class LogsFailureState extends LogsState {
-  const LogsFailureState();
-}
+class const LogsFailureState() extends LogsState;

@@ -62,7 +62,7 @@ class AddLogButton extends StatelessWidget {
 class const _SliverLogsBody() extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final state = context.select((LogsCubit cubit) => cubit.state);
+    final state = context.select<LogsCubit, LogsState>((cubit) => cubit.state);
 
     return switch (state) {
       LogsLoadingState() => const SliverToBoxAdapter(child: LoadingIndicator()),

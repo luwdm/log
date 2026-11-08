@@ -18,7 +18,7 @@ class LogsCubit(final LogRepository _logRepository) extends Cubit<LogsState> {
 
   @override
   Future<void> close() {
-    _logsSubscription.cancel();
+    unawaited(_logsSubscription.cancel());
     return super.close();
   }
 }

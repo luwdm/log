@@ -1,10 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-class NoContentPlaceholder extends StatelessWidget {
-  const NoContentPlaceholder({required this.title, super.key});
-
-  final Text title;
-
+class const NoContentPlaceholder({required final Text title, super.key})
+    extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [title]);

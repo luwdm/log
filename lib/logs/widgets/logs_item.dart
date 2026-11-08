@@ -1,22 +1,14 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 
-class LogsItem extends StatelessWidget {
-  const LogsItem({
-    required this.onPressed,
-    required this.accomplishments,
-    required this.improvements,
-    required this.nextThings,
-    required this.date,
-    super.key,
-  });
-
-  final String accomplishments;
-  final String improvements;
-  final String nextThings;
-  final DateTime date;
-  final VoidCallback onPressed;
-
+class const LogsItem({
+  required final VoidCallback onPressed,
+  required final String accomplishments,
+  required final String improvements,
+  required final String nextThings,
+  required final DateTime date,
+  super.key,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);

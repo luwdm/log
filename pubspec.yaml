@@ -10,10 +10,10 @@ environment:
 dependencies:
   drift: ^2.34.4
   drift_flutter: ^0.3.1
-  equatable: ^2.0.5
+  equatable: ^3.0.0
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.6
+  flutter_bloc: ^9.1.1
   flutter_localizations:
     sdk: flutter
   formz: ^0.8.1
@@ -28,7 +28,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   go_router_builder: ^4.5.0
-  very_good_analysis: ^6.0.0
+  very_good_analysis: ^11.0.0
 
 flutter:
   uses-material-design: true
