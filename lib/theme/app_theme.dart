@@ -7,6 +7,7 @@ ThemeData get theme {
   );
 
   return ThemeData(
+    fontFamily: 'JetBrains Mono',
     colorScheme: colorScheme,
     inputDecorationTheme: colorScheme.inputDecorationTheme,
     filledButtonTheme: colorScheme.filledButtonTheme,
