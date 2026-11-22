@@ -9,6 +9,7 @@ ThemeData get theme {
   return ThemeData(
     colorScheme: colorScheme,
     inputDecorationTheme: colorScheme.inputDecorationTheme,
+    filledButtonTheme: colorScheme.filledButtonTheme,
     appBarTheme: const AppBarTheme(leadingWidth: 48, titleSpacing: 4),
   );
 }
@@ -32,5 +33,9 @@ extension on ColorScheme {
       borderRadius: .circular(12),
     ),
     filled: true,
+  );
+
+  FilledButtonThemeData get filledButtonTheme => FilledButtonThemeData(
+    style: FilledButton.styleFrom(minimumSize: const Size(0, 50)),
   );
 }
