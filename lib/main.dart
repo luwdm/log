@@ -1,8 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/app/app.dart';
-import 'package:work_log/database/daos/log_dao.dart';
-import 'package:work_log/database/database.dart';
-import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/data/data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

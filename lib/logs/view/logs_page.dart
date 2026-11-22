@@ -1,18 +1,18 @@
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:work_log/database/database.dart';
-import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/data/data.dart';
+import 'package:work_log/domain/domain.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
-import 'package:work_log/logs/cubit/logs_cubit.dart';
-import 'package:work_log/logs/widgets/widgets.dart';
+import 'package:work_log/logs/logs.dart';
 import 'package:work_log/router/router.dart';
 
 class const LogsPage({super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LogsCubit(context.read<LogRepository>()),
+      create: (context) =>
+          LogsCubit(context.read<LogRepository>())..setupLogSubscription(),
       child: const LogsPageView(),
     );
   }
@@ -87,7 +87,7 @@ class const LogsError({super.key}) extends StatelessWidget {
   }
 }
 
-class const SliverLogList({required final List<LogTableData> logs, super.key})
+class const SliverLogList({required final List<Log> logs, super.key})
     extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -98,7 +98,7 @@ class const SliverLogList({required final List<LogTableData> logs, super.key})
         final log = logs[index];
         return Center(
           child: LogsItem(
-            onPressed: () => UpdateLogRoute($extra: log).go(context),
+            onPressed: () => UpdateLogRoute(log).go(context),
             accomplishments: log.accomplishments,
             improvements: log.improvements,
             nextThings: log.nextThings,

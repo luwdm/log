@@ -1,8 +1,22 @@
-import 'package:work_log/database/daos/log_dao.dart';
-import 'package:work_log/database/database.dart';
+import 'package:work_log/data/data.dart';
+import 'package:work_log/domain/domain.dart';
 
 class const LogRepository(final LogDao _logDao) {
-  Stream<List<LogTableData>> watch() => _logDao.watch();
+  Stream<List<Log>> watch() {
+    return _logDao.watch().map(
+      (logs) => logs
+          .map(
+            (log) => Log(
+              id: log.id,
+              date: log.date,
+              accomplishments: log.accomplishments,
+              improvements: log.improvements,
+              nextThings: log.nextThings,
+            ),
+          )
+          .toList(),
+    );
+  }
 
   Future<void> upsert({
     required String accomplishments,

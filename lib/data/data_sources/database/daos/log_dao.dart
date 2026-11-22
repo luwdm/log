@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:work_log/database/database.dart';
-import 'package:work_log/database/tables/log_table.dart';
+import 'package:work_log/data/data.dart';
 
 part 'log_dao.g.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/data/data.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/router/router.dart';
 import 'package:work_log/theme/app_theme.dart';

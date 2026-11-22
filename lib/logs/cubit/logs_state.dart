@@ -7,7 +7,7 @@ sealed class const LogsState() with Equatable {
 
 class const LogsLoadingState() extends LogsState;
 
-class const LogsSuccessState(final List<LogTableData> logs) extends LogsState {
+class const LogsSuccessState(final List<Log> logs) extends LogsState {
   @override
   List<Object?> get props => [logs];
 }

@@ -1,16 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:work_log/database/database.dart';
 import 'package:work_log/delete_log/delete_log.dart';
+import 'package:work_log/domain/domain.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/l10n/extensions/required_input_error_localization.dart';
 import 'package:work_log/theme/app_sizes.dart';
 import 'package:work_log/upsert_log/cubit/upsert_log_cubit.dart';
 import 'package:work_log/widgets/widgets.dart';
 
-class const UpsertLogPage({final LogTableData? log, super.key})
-    extends StatelessWidget {
+class const UpsertLogPage({final Log? log, super.key}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

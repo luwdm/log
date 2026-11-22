@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/data/data.dart';
 
 part 'delete_log_state.dart';
 

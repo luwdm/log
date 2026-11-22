@@ -68,7 +68,7 @@ mixin $AddLogRoute on GoRouteData {
 
 mixin $UpdateLogRoute on GoRouteData {
   static UpdateLogRoute _fromState(GoRouterState state) =>
-      UpdateLogRoute($extra: state.extra! as LogTableData);
+      UpdateLogRoute(state.extra as Log?);
 
   UpdateLogRoute get _self => this as UpdateLogRoute;
 

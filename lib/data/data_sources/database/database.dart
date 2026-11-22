@@ -1,10 +1,10 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:work_log/database/tables/log_table.dart';
+import 'package:work_log/data/data.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [LogTable])
+@DriftDatabase(tables: [LogTable, TaskTable])
 class Database() extends _$Database {
   this : super(_openConnection());
 
