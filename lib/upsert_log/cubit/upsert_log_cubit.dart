@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:work_log/data/data.dart';
 import 'package:work_log/domain/domain.dart';
-import 'package:work_log/upsert_log/upsert_log.dart';
+import 'package:work_log/formz/formz.dart';
 
 part 'upsert_log_state.dart';
 

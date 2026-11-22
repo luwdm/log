@@ -4,7 +4,7 @@ import 'package:work_log/data/data.dart';
 
 part 'database.g.dart';
 
-@DriftDatabase(tables: [LogTable, TaskTable])
+@DriftDatabase(tables: [LogTable, TaskTable, ScheduleTable])
 class Database() extends _$Database {
   this : super(_openConnection());
 

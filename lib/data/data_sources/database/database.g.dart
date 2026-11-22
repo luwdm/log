@@ -672,16 +672,227 @@ class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
   }
 }
 
+class $ScheduleTableTable extends ScheduleTable
+    with TableInfo<$ScheduleTableTable, ScheduleTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ScheduleTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _tasksMeta = const VerificationMeta('tasks');
+  @override
+  late final GeneratedColumn<int> tasks = GeneratedColumn<int>(
+    'tasks',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES task_table (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, tasks];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'schedule_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ScheduleTableData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('tasks')) {
+      context.handle(
+        _tasksMeta,
+        tasks.isAcceptableOrUnknown(data['tasks']!, _tasksMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ScheduleTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ScheduleTableData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      tasks: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}tasks'],
+      ),
+    );
+  }
+
+  @override
+  $ScheduleTableTable createAlias(String alias) {
+    return $ScheduleTableTable(attachedDatabase, alias);
+  }
+}
+
+class ScheduleTableData extends DataClass
+    implements Insertable<ScheduleTableData> {
+  final int id;
+  final int? tasks;
+  const ScheduleTableData({required this.id, this.tasks});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || tasks != null) {
+      map['tasks'] = Variable<int>(tasks);
+    }
+    return map;
+  }
+
+  ScheduleTableCompanion toCompanion(bool nullToAbsent) {
+    return ScheduleTableCompanion(
+      id: Value(id),
+      tasks: tasks == null && nullToAbsent
+          ? const Value.absent()
+          : Value(tasks),
+    );
+  }
+
+  factory ScheduleTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ScheduleTableData(
+      id: serializer.fromJson<int>(json['id']),
+      tasks: serializer.fromJson<int?>(json['tasks']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'tasks': serializer.toJson<int?>(tasks),
+    };
+  }
+
+  ScheduleTableData copyWith({
+    int? id,
+    Value<int?> tasks = const Value.absent(),
+  }) => ScheduleTableData(
+    id: id ?? this.id,
+    tasks: tasks.present ? tasks.value : this.tasks,
+  );
+  ScheduleTableData copyWithCompanion(ScheduleTableCompanion data) {
+    return ScheduleTableData(
+      id: data.id.present ? data.id.value : this.id,
+      tasks: data.tasks.present ? data.tasks.value : this.tasks,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ScheduleTableData(')
+          ..write('id: $id, ')
+          ..write('tasks: $tasks')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, tasks);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ScheduleTableData &&
+          other.id == this.id &&
+          other.tasks == this.tasks);
+}
+
+class ScheduleTableCompanion extends UpdateCompanion<ScheduleTableData> {
+  final Value<int> id;
+  final Value<int?> tasks;
+  const ScheduleTableCompanion({
+    this.id = const Value.absent(),
+    this.tasks = const Value.absent(),
+  });
+  ScheduleTableCompanion.insert({
+    this.id = const Value.absent(),
+    this.tasks = const Value.absent(),
+  });
+  static Insertable<ScheduleTableData> custom({
+    Expression<int>? id,
+    Expression<int>? tasks,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (tasks != null) 'tasks': tasks,
+    });
+  }
+
+  ScheduleTableCompanion copyWith({Value<int>? id, Value<int?>? tasks}) {
+    return ScheduleTableCompanion(
+      id: id ?? this.id,
+      tasks: tasks ?? this.tasks,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (tasks.present) {
+      map['tasks'] = Variable<int>(tasks.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ScheduleTableCompanion(')
+          ..write('id: $id, ')
+          ..write('tasks: $tasks')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
   late final $LogTableTable logTable = $LogTableTable(this);
   late final $TaskTableTable taskTable = $TaskTableTable(this);
+  late final $ScheduleTableTable scheduleTable = $ScheduleTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [logTable, taskTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [
+    logTable,
+    taskTable,
+    scheduleTable,
+  ];
 }
 
 typedef $$LogTableTableCreateCompanionBuilder = LogTableCompanion Function({
@@ -901,6 +1112,29 @@ typedef $$TaskTableTableUpdateCompanionBuilder = TaskTableCompanion Function({
   Value<DateTime> scheduleAt,
 });
 
+final class $$TaskTableTableReferences
+    extends BaseReferences<_$Database, $TaskTableTable, TaskTableData> {
+  $$TaskTableTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$ScheduleTableTable, List<ScheduleTableData>>
+  _scheduleTableRefsTable(_$Database db) => MultiTypedResultKey.fromTable(
+    db.scheduleTable,
+    aliasName: 'task_table__id__schedule_table__tasks',
+  );
+
+  $$ScheduleTableTableProcessedTableManager get scheduleTableRefs {
+    final manager = $$ScheduleTableTableTableManager(
+      $_db,
+      $_db.scheduleTable,
+    ).filter((f) => f.tasks.id.sqlEquals($_itemColumn<int>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_scheduleTableRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
 class $$TaskTableTableFilterComposer
     extends Composer<_$Database, $TaskTableTable> {
   $$TaskTableTableFilterComposer({
@@ -929,6 +1163,31 @@ class $$TaskTableTableFilterComposer
     column: $table.scheduleAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> scheduleTableRefs(
+    Expression<bool> Function($$ScheduleTableTableFilterComposer f) f,
+  ) {
+    final $$ScheduleTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.scheduleTable,
+      getReferencedColumn: (t) => t.tasks,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ScheduleTableTableFilterComposer(
+            $db: $db,
+            $table: $db.scheduleTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$TaskTableTableOrderingComposer
@@ -985,6 +1244,31 @@ class $$TaskTableTableAnnotationComposer
     column: $table.scheduleAt,
     builder: (column) => column,
   );
+
+  Expression<T> scheduleTableRefs<T extends Object>(
+    Expression<T> Function($$ScheduleTableTableAnnotationComposer a) f,
+  ) {
+    final $$ScheduleTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.scheduleTable,
+      getReferencedColumn: (t) => t.tasks,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ScheduleTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.scheduleTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$TaskTableTableTableManager
@@ -998,12 +1282,9 @@ class $$TaskTableTableTableManager
           $$TaskTableTableAnnotationComposer,
           $$TaskTableTableCreateCompanionBuilder,
           $$TaskTableTableUpdateCompanionBuilder,
-          (
-            TaskTableData,
-            BaseReferences<_$Database, $TaskTableTable, TaskTableData>,
-          ),
+          (TaskTableData, $$TaskTableTableReferences),
           TaskTableData,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool scheduleTableRefs})
         > {
   $$TaskTableTableTableManager(_$Database db, $TaskTableTable table)
     : super(
@@ -1044,15 +1325,43 @@ class $$TaskTableTableTableManager
               .map(
                 (e) => (
                   e.readTable<$TaskTableTable, TaskTableData>(table),
-                  BaseReferences<_$Database, $TaskTableTable, TaskTableData>(
-                    db,
-                    table,
-                    e,
-                  ),
+                  $$TaskTableTableReferences(db, table, e),
                 ),
               )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({scheduleTableRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (scheduleTableRefs) db.scheduleTable,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (scheduleTableRefs)
+                    await $_getPrefetchedDataByColumns<
+                      TaskTableData,
+                      $TaskTableTable,
+                      ScheduleTableData,
+                      $ScheduleTableTable
+                    >(
+                      currentTable: table,
+                      referencedTable: $$TaskTableTableReferences
+                          ._scheduleTableRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$TaskTableTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).scheduleTableRefs,
+                      currentColumn: 'id',
+                      referencedColumn: 'tasks',
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -1067,12 +1376,251 @@ typedef $$TaskTableTableProcessedTableManager =
       $$TaskTableTableAnnotationComposer,
       $$TaskTableTableCreateCompanionBuilder,
       $$TaskTableTableUpdateCompanionBuilder,
-      (
-        TaskTableData,
-        BaseReferences<_$Database, $TaskTableTable, TaskTableData>,
-      ),
+      (TaskTableData, $$TaskTableTableReferences),
       TaskTableData,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool scheduleTableRefs})
+    >;
+typedef $$ScheduleTableTableCreateCompanionBuilder =
+    ScheduleTableCompanion Function({Value<int> id, Value<int?> tasks});
+typedef $$ScheduleTableTableUpdateCompanionBuilder =
+    ScheduleTableCompanion Function({Value<int> id, Value<int?> tasks});
+
+final class $$ScheduleTableTableReferences
+    extends BaseReferences<_$Database, $ScheduleTableTable, ScheduleTableData> {
+  $$ScheduleTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $TaskTableTable _tasksTable(_$Database db) =>
+      db.taskTable.createAlias('schedule_table__tasks__task_table__id');
+
+  $$TaskTableTableProcessedTableManager? get tasks {
+    final $_column = $_itemColumn<int>('tasks');
+    if ($_column == null) return null;
+    final manager = $$TaskTableTableTableManager(
+      $_db,
+      $_db.taskTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_tasksTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ScheduleTableTableFilterComposer
+    extends Composer<_$Database, $ScheduleTableTable> {
+  $$ScheduleTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$TaskTableTableFilterComposer get tasks {
+    final $$TaskTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tasks,
+      referencedTable: $db.taskTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TaskTableTableFilterComposer(
+            $db: $db,
+            $table: $db.taskTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ScheduleTableTableOrderingComposer
+    extends Composer<_$Database, $ScheduleTableTable> {
+  $$ScheduleTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$TaskTableTableOrderingComposer get tasks {
+    final $$TaskTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tasks,
+      referencedTable: $db.taskTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TaskTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.taskTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ScheduleTableTableAnnotationComposer
+    extends Composer<_$Database, $ScheduleTableTable> {
+  $$ScheduleTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  $$TaskTableTableAnnotationComposer get tasks {
+    final $$TaskTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.tasks,
+      referencedTable: $db.taskTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$TaskTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.taskTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ScheduleTableTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $ScheduleTableTable,
+          ScheduleTableData,
+          $$ScheduleTableTableFilterComposer,
+          $$ScheduleTableTableOrderingComposer,
+          $$ScheduleTableTableAnnotationComposer,
+          $$ScheduleTableTableCreateCompanionBuilder,
+          $$ScheduleTableTableUpdateCompanionBuilder,
+          (ScheduleTableData, $$ScheduleTableTableReferences),
+          ScheduleTableData,
+          PrefetchHooks Function({bool tasks})
+        > {
+  $$ScheduleTableTableTableManager(_$Database db, $ScheduleTableTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ScheduleTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ScheduleTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ScheduleTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> tasks = const Value.absent(),
+          }) => ScheduleTableCompanion(id: id, tasks: tasks),
+          createCompanionCallback: ({
+            Value<int> id = const Value.absent(),
+            Value<int?> tasks = const Value.absent(),
+          }) => ScheduleTableCompanion.insert(id: id, tasks: tasks),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$ScheduleTableTable, ScheduleTableData>(table),
+                  $$ScheduleTableTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({tasks = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (tasks) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.tasks,
+                        referencedTable: $$ScheduleTableTableReferences
+                            ._tasksTable(db),
+                        referencedColumn: $$ScheduleTableTableReferences
+                            ._tasksTable(db)
+                            .id,
+                      ) as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ScheduleTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $ScheduleTableTable,
+      ScheduleTableData,
+      $$ScheduleTableTableFilterComposer,
+      $$ScheduleTableTableOrderingComposer,
+      $$ScheduleTableTableAnnotationComposer,
+      $$ScheduleTableTableCreateCompanionBuilder,
+      $$ScheduleTableTableUpdateCompanionBuilder,
+      (ScheduleTableData, $$ScheduleTableTableReferences),
+      ScheduleTableData,
+      PrefetchHooks Function({bool tasks})
     >;
 
 class $DatabaseManager {
@@ -1082,4 +1630,6 @@ class $DatabaseManager {
       $$LogTableTableTableManager(_db, _db.logTable);
   $$TaskTableTableTableManager get taskTable =>
       $$TaskTableTableTableManager(_db, _db.taskTable);
+  $$ScheduleTableTableTableManager get scheduleTable =>
+      $$ScheduleTableTableTableManager(_db, _db.scheduleTable);
 }
