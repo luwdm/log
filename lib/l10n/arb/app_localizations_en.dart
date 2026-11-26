@@ -89,4 +89,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get thisFieldIsRequired => 'This field is required';
+
+  @override
+  String get taskBoard => 'Week';
+
+  @override
+  String weekOfDateFormat(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return 'Week of $dateString';
+  }
+
+  @override
+  String taskBoardWeekdayFormat(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.EEEE(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String taskBoardDayFormat(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMd(localeName);
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String taskDateFormat(DateTime date) {
+    final intl.DateFormat dateDateFormat = intl.DateFormat.MMMMEEEEd(
+      localeName,
+    );
+    final String dateString = dateDateFormat.format(date);
+
+    return '$dateString';
+  }
+
+  @override
+  String get previousWeek => 'Previous week';
+
+  @override
+  String get nextWeek => 'Next week';
+
+  @override
+  String get today => 'Today';
+
+  @override
+  String get noTasks => 'No tasks';
+
+  @override
+  String get editTask => 'Edit Task';
+
+  @override
+  String get descriptionOptional => 'Description (optional)';
+
+  @override
+  String get day => 'Day';
+
+  @override
+  String get deleteTask => 'Delete Task';
+
+  @override
+  String get infoWhenUserIsAboutToDeleteTheTask =>
+      'This task will be deleted permanently. Are you sure?';
+
+  @override
+  String get somethingWentWrong => 'Something went wrong.';
 }

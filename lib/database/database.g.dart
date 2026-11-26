@@ -367,15 +367,318 @@ class LogTableCompanion extends UpdateCompanion<LogTableData> {
   }
 }
 
+class $TaskTableTable extends TaskTable
+    with TableInfo<$TaskTableTable, TaskTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TaskTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+    'title',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(minTextLength: 1),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(''),
+  );
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<DateTime> date = GeneratedColumn<DateTime>(
+    'date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [id, title, description, date];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'task_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<TaskTableData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+        _titleMeta,
+        title.isAcceptableOrUnknown(data['title']!, _titleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+        _dateMeta,
+        date.isAcceptableOrUnknown(data['date']!, _dateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  TaskTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return TaskTableData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      title: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}title'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      date: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}date'],
+      )!,
+    );
+  }
+
+  @override
+  $TaskTableTable createAlias(String alias) {
+    return $TaskTableTable(attachedDatabase, alias);
+  }
+}
+
+class TaskTableData extends DataClass implements Insertable<TaskTableData> {
+  final int id;
+  final String title;
+  final String description;
+
+  /// The day the task is planned for, stored without a time of day.
+  final DateTime date;
+  const TaskTableData({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.date,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['title'] = Variable<String>(title);
+    map['description'] = Variable<String>(description);
+    map['date'] = Variable<DateTime>(date);
+    return map;
+  }
+
+  TaskTableCompanion toCompanion(bool nullToAbsent) {
+    return TaskTableCompanion(
+      id: Value(id),
+      title: Value(title),
+      description: Value(description),
+      date: Value(date),
+    );
+  }
+
+  factory TaskTableData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return TaskTableData(
+      id: serializer.fromJson<int>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      description: serializer.fromJson<String>(json['description']),
+      date: serializer.fromJson<DateTime>(json['date']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'title': serializer.toJson<String>(title),
+      'description': serializer.toJson<String>(description),
+      'date': serializer.toJson<DateTime>(date),
+    };
+  }
+
+  TaskTableData copyWith({
+    int? id,
+    String? title,
+    String? description,
+    DateTime? date,
+  }) => TaskTableData(
+    id: id ?? this.id,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    date: date ?? this.date,
+  );
+  TaskTableData copyWithCompanion(TaskTableCompanion data) {
+    return TaskTableData(
+      id: data.id.present ? data.id.value : this.id,
+      title: data.title.present ? data.title.value : this.title,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      date: data.date.present ? data.date.value : this.date,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TaskTableData(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, title, description, date);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is TaskTableData &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.description == this.description &&
+          other.date == this.date);
+}
+
+class TaskTableCompanion extends UpdateCompanion<TaskTableData> {
+  final Value<int> id;
+  final Value<String> title;
+  final Value<String> description;
+  final Value<DateTime> date;
+  const TaskTableCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.description = const Value.absent(),
+    this.date = const Value.absent(),
+  });
+  TaskTableCompanion.insert({
+    this.id = const Value.absent(),
+    required String title,
+    this.description = const Value.absent(),
+    required DateTime date,
+  }) : title = Value(title),
+       date = Value(date);
+  static Insertable<TaskTableData> custom({
+    Expression<int>? id,
+    Expression<String>? title,
+    Expression<String>? description,
+    Expression<DateTime>? date,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (description != null) 'description': description,
+      if (date != null) 'date': date,
+    });
+  }
+
+  TaskTableCompanion copyWith({
+    Value<int>? id,
+    Value<String>? title,
+    Value<String>? description,
+    Value<DateTime>? date,
+  }) {
+    return TaskTableCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      date: date ?? this.date,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<DateTime>(date.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('TaskTableCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('description: $description, ')
+          ..write('date: $date')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$Database extends GeneratedDatabase {
   _$Database(QueryExecutor e) : super(e);
   $DatabaseManager get managers => $DatabaseManager(this);
   late final $LogTableTable logTable = $LogTableTable(this);
+  late final $TaskTableTable taskTable = $TaskTableTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [logTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [logTable, taskTable];
 }
 
 typedef $$LogTableTableCreateCompanionBuilder = LogTableCompanion Function({
@@ -582,10 +885,196 @@ typedef $$LogTableTableProcessedTableManager =
       LogTableData,
       PrefetchHooks Function()
     >;
+typedef $$TaskTableTableCreateCompanionBuilder = TaskTableCompanion Function({
+  Value<int> id,
+  required String title,
+  Value<String> description,
+  required DateTime date,
+});
+typedef $$TaskTableTableUpdateCompanionBuilder = TaskTableCompanion Function({
+  Value<int> id,
+  Value<String> title,
+  Value<String> description,
+  Value<DateTime> date,
+});
+
+class $$TaskTableTableFilterComposer
+    extends Composer<_$Database, $TaskTableTable> {
+  $$TaskTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$TaskTableTableOrderingComposer
+    extends Composer<_$Database, $TaskTableTable> {
+  $$TaskTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get title => $composableBuilder(
+    column: $table.title,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get date => $composableBuilder(
+    column: $table.date,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$TaskTableTableAnnotationComposer
+    extends Composer<_$Database, $TaskTableTable> {
+  $$TaskTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get title =>
+      $composableBuilder(column: $table.title, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get date =>
+      $composableBuilder(column: $table.date, builder: (column) => column);
+}
+
+class $$TaskTableTableTableManager
+    extends
+        RootTableManager<
+          _$Database,
+          $TaskTableTable,
+          TaskTableData,
+          $$TaskTableTableFilterComposer,
+          $$TaskTableTableOrderingComposer,
+          $$TaskTableTableAnnotationComposer,
+          $$TaskTableTableCreateCompanionBuilder,
+          $$TaskTableTableUpdateCompanionBuilder,
+          (
+            TaskTableData,
+            BaseReferences<_$Database, $TaskTableTable, TaskTableData>,
+          ),
+          TaskTableData,
+          PrefetchHooks Function()
+        > {
+  $$TaskTableTableTableManager(_$Database db, $TaskTableTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$TaskTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$TaskTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$TaskTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> title = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<DateTime> date = const Value.absent(),
+              }) => TaskTableCompanion(
+                id: id,
+                title: title,
+                description: description,
+                date: date,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String title,
+                Value<String> description = const Value.absent(),
+                required DateTime date,
+              }) => TaskTableCompanion.insert(
+                id: id,
+                title: title,
+                description: description,
+                date: date,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$TaskTableTable, TaskTableData>(table),
+                  BaseReferences<_$Database, $TaskTableTable, TaskTableData>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$TaskTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$Database,
+      $TaskTableTable,
+      TaskTableData,
+      $$TaskTableTableFilterComposer,
+      $$TaskTableTableOrderingComposer,
+      $$TaskTableTableAnnotationComposer,
+      $$TaskTableTableCreateCompanionBuilder,
+      $$TaskTableTableUpdateCompanionBuilder,
+      (
+        TaskTableData,
+        BaseReferences<_$Database, $TaskTableTable, TaskTableData>,
+      ),
+      TaskTableData,
+      PrefetchHooks Function()
+    >;
 
 class $DatabaseManager {
   final _$Database _db;
   $DatabaseManager(this._db);
   $$LogTableTableTableManager get logTable =>
       $$LogTableTableTableManager(_db, _db.logTable);
+  $$TaskTableTableTableManager get taskTable =>
+      $$TaskTableTableTableManager(_db, _db.taskTable);
 }

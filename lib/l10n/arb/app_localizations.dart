@@ -237,6 +237,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This field is required'**
   String get thisFieldIsRequired;
+
+  /// Title of the task board
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get taskBoard;
+
+  /// Title of the task board showing the first day of the week
+  ///
+  /// In en, this message translates to:
+  /// **'Week of {date}'**
+  String weekOfDateFormat(DateTime date);
+
+  /// Weekday in a task board column header
+  ///
+  /// In en, this message translates to:
+  /// **'{date}'**
+  String taskBoardWeekdayFormat(DateTime date);
+
+  /// Date in a task board column header
+  ///
+  /// In en, this message translates to:
+  /// **'{date}'**
+  String taskBoardDayFormat(DateTime date);
+
+  /// Date of a task in the task form
+  ///
+  /// In en, this message translates to:
+  /// **'{date}'**
+  String taskDateFormat(DateTime date);
+
+  /// Tooltip of the previous week button
+  ///
+  /// In en, this message translates to:
+  /// **'Previous week'**
+  String get previousWeek;
+
+  /// Tooltip of the next week button
+  ///
+  /// In en, this message translates to:
+  /// **'Next week'**
+  String get nextWeek;
+
+  /// Jump to the current week
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get today;
+
+  /// Shown in a day column without tasks
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks'**
+  String get noTasks;
+
+  /// Title of the task form when updating a task
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Task'**
+  String get editTask;
+
+  /// Label of the task description input
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get descriptionOptional;
+
+  /// Label of the task day input
+  ///
+  /// In en, this message translates to:
+  /// **'Day'**
+  String get day;
+
+  /// Delete task
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Task'**
+  String get deleteTask;
+
+  /// Info when user is about to delete the task
+  ///
+  /// In en, this message translates to:
+  /// **'This task will be deleted permanently. Are you sure?'**
+  String get infoWhenUserIsAboutToDeleteTheTask;
+
+  /// Generic error message
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong.'**
+  String get somethingWentWrong;
 }
 
 class _AppLocalizationsDelegate
