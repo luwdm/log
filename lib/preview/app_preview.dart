@@ -17,10 +17,10 @@ final class const AppPreview({
 final class AppPreviewTheme extends PreviewThemeData {
   @override
   Widget apply(BuildContext context, Widget child) {
-    return Theme(data: theme, child: child);
-    // return switch (MediaQuery.platformBrightnessOf(context)) {
-    //   .light => ,
-    //   .dark => ,
-    // };
+    final data = switch (MediaQuery.platformBrightnessOf(context)) {
+      .light => lightTheme,
+      .dark => darkTheme,
+    };
+    return Theme(data: data, child: child);
   }
 }

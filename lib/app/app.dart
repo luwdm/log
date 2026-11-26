@@ -12,7 +12,8 @@ class const App({required final LogRepository logRepository, super.key})
     return MultiRepositoryProvider(
       providers: [RepositoryProvider.value(value: logRepository)],
       child: MaterialApp.router(
-        theme: theme,
+        theme: lightTheme,
+        darkTheme: darkTheme,
         localizationsDelegates: const [
           ...AppLocalizations.localizationsDelegates,
           GlobalMaterialLocalizations.delegate,
