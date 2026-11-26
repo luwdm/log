@@ -1,8 +1,13 @@
 import 'package:material_ui/material_ui.dart';
 
-ThemeData get theme {
+ThemeData get lightTheme => _buildTheme(.light);
+
+ThemeData get darkTheme => _buildTheme(.dark);
+
+ThemeData _buildTheme(Brightness brightness) {
   final colorScheme = ColorScheme.fromSeed(
     seedColor: Colors.blueAccent,
+    brightness: brightness,
     dynamicSchemeVariant: .vibrant,
   );
 
