@@ -77,7 +77,7 @@
     "description": "Logster intro"
   },
   "intro": "Intro",
-  "@intro": { 
+  "@intro": {
     "description": "intro"
   },
   "logDateFormat": "{date}",
@@ -101,5 +101,89 @@
   "thisFieldIsRequired": "This field is required",
   "@thisFieldIsRequired": {
     "description": "This field is required"
+  },
+  "taskBoard": "Week",
+  "@taskBoard": {
+    "description": "Title of the task board"
+  },
+  "weekOfDateFormat": "Week of {date}",
+  "@weekOfDateFormat": {
+    "description": "Title of the task board showing the first day of the week",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMd"
+      }
+    }
+  },
+  "taskBoardWeekdayFormat": "{date}",
+  "@taskBoardWeekdayFormat": {
+    "description": "Weekday in a task board column header",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "EEEE"
+      }
+    }
+  },
+  "taskBoardDayFormat": "{date}",
+  "@taskBoardDayFormat": {
+    "description": "Date in a task board column header",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMd"
+      }
+    }
+  },
+  "taskDateFormat": "{date}",
+  "@taskDateFormat": {
+    "description": "Date of a task in the task form",
+    "placeholders": {
+      "date": {
+        "type": "DateTime",
+        "format": "MMMMEEEEd"
+      }
+    }
+  },
+  "previousWeek": "Previous week",
+  "@previousWeek": {
+    "description": "Tooltip of the previous week button"
+  },
+  "nextWeek": "Next week",
+  "@nextWeek": {
+    "description": "Tooltip of the next week button"
+  },
+  "today": "Today",
+  "@today": {
+    "description": "Jump to the current week"
+  },
+  "noTasks": "No tasks",
+  "@noTasks": {
+    "description": "Shown in a day column without tasks"
+  },
+  "editTask": "Edit Task",
+  "@editTask": {
+    "description": "Title of the task form when updating a task"
+  },
+  "descriptionOptional": "Description (optional)",
+  "@descriptionOptional": {
+    "description": "Label of the task description input"
+  },
+  "day": "Day",
+  "@day": {
+    "description": "Label of the task day input"
+  },
+  "deleteTask": "Delete Task",
+  "@deleteTask": {
+    "description": "Delete task"
+  },
+  "infoWhenUserIsAboutToDeleteTheTask": "This task will be deleted permanently. Are you sure?",
+  "@infoWhenUserIsAboutToDeleteTheTask": {
+    "description": "Info when user is about to delete the task"
+  },
+  "somethingWentWrong": "Something went wrong.",
+  "@somethingWentWrong": {
+    "description": "Generic error message"
   }
 }

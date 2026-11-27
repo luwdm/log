@@ -1,16 +1,23 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:work_log/domain/log_repository.dart';
+import 'package:work_log/domain/task_repository.dart';
 import 'package:work_log/l10n/arb/app_localizations.dart';
 import 'package:work_log/router/router.dart';
 import 'package:work_log/theme/app_theme.dart';
 
-class const App({required final LogRepository logRepository, super.key})
-    extends StatelessWidget {
+class const App({
+  required final LogRepository logRepository,
+  required final TaskRepository taskRepository,
+  super.key,
+}) extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
-      providers: [RepositoryProvider.value(value: logRepository)],
+      providers: [
+        RepositoryProvider.value(value: logRepository),
+        RepositoryProvider.value(value: taskRepository),
+      ],
       child: MaterialApp.router(
         theme: theme,
         localizationsDelegates: const [

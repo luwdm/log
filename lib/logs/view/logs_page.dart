@@ -34,6 +34,11 @@ class const LogsPageView({super.key}) extends StatelessWidget {
           SliverAppBar(
             title: Text(l10n.logs),
             centerTitle: true,
+            leading: IconButton(
+              tooltip: l10n.taskBoard,
+              onPressed: () => const TaskBoardRoute().go(context),
+              icon: const Icon(Icons.view_week_outlined),
+            ),
             actions: const [AddLogButton(), SizedBox(width: 16)],
           ),
           const SliverPadding(
